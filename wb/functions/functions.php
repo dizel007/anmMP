@@ -49,7 +49,7 @@ function light_query_with_data($token_wb, $link_wb, $data){
 	echo     'Результат обмена(with Data): '.$http_code. "<br>";
 	
 	$res = json_decode($res, true);
-	var_dump($res);
+	// var_dump($res); // выводит результирующий массив
 	return $res;
 
 }
@@ -131,7 +131,7 @@ function get_orders_from_supply($token_wb, $supplyId) {
 
 // Разбиваем массив на 100 и менее заказов
 if (count($arr_orders)> 100) {
-	echo "<br><br><br>*************ПОПАЛИ В УСЛОВИЕ ///БОЛЬШЕ СОТНИ ЗАКАЗОВ//// *******<br><br><br>";	
+	echo "<br><br>*************ПОПАЛИ В УСЛОВИЕ БОЛЬШЕ СОТНИ ЗАКАЗОВ//// *******<br><br>";	
 
 $kolvo_soten = 1;
 $j=0;
@@ -186,7 +186,7 @@ print_r($res_stikers);
 
 } else {
 
-	echo "<br>*************ПОПАЛИ В УСЛОВИЕ ///МЕНЬШЕ  СОТНИ ЗАКАЗОВ//// *******<br>";
+	echo "<br>*************ПОПАЛИ В УСЛОВИЕ МЕНЬШЕ  СОТНИ ЗАКАЗОВ//// *******<br>";
 // ************************   Если количество заказов меньше 100 штук
 	// массив с номерами заказа
 	 	$data = array(

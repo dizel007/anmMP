@@ -46,15 +46,40 @@ function create_marker_recover_file($new_path) {
  //********************************************************************************************************************************* */
 // функия формирования файла с заказами и номером поставки
 function make_recovery_json_orders_file($path_recovery, $orderId, $supplyId, $article) {
-    $article = make_rigth_file_name($$article);
-    file_put_contents($path_recovery."/".$article.".txt", $article);
-    $orderId = $orderId.";";
+    echo "<br> Функция записи в файл восстновления Заказ: $orderId ; Поставка :$supplyId";
+    $temp_path = $path_recovery."/".$supplyId;
+    make_new_dir_z($temp_path,0); // создаем папку с номером заказа
 
-    file_put_contents($path_recovery."/".$supplyId.".txt", $orderId, FILE_APPEND); // добавляем данные в файл с накопительным итогом
+    $article =  make_rigth_file_name($article);
+    $article =  make_right_articl($article);
+    file_put_contents($temp_path."/article.txt", $article);
+// Если существует файл поставки, то открываем его 
+    if (file_exists($temp_path."/".$supplyId.".txt")) {
+        $str_file = file_get_contents($temp_path."/".$supplyId.".txt");
+        $arr_file = json_decode($str_file);
+        $sigh_order=0;
 
+ //  перебираем все заказы из файла
+        foreach ($arr_file as $order) {
+            if ($order == $orderId) {
+                $sigh_order=1;
+            }
+        }
+        if ($sigh_order == 0) {
+            $arr_file[] = $orderId; // добавляем заказ в поставку
+            $filedata_json = json_encode($arr_file, JSON_UNESCAPED_UNICODE);
+            file_put_contents($temp_path."/".$supplyId.".txt", $filedata_json); // добавляем данные в файл с накопительным итогом
+        } else { // если заказ есть в поставке, то не пишем его туда
+            $arr_orderId = $arr_file; // сохраняем старые заказы
+            $filedata_json = json_encode($arr_orderId, JSON_UNESCAPED_UNICODE);
+            file_put_contents($temp_path."/".$supplyId.".txt", $filedata_json); // добавляем данные в файл с накопительным итогом
+        }
+
+    } else { // если файл не существует , то пишем первый заказ
+        $arr_orderId[] = $orderId; // добавляем в файл первый заказ
+        $filedata_json = json_encode($arr_orderId, JSON_UNESCAPED_UNICODE);
+        file_put_contents($temp_path."/".$supplyId.".txt", $filedata_json); // добавляем данные в файл с накопительным итогом 
+    }
+    
 
 }
-
-
-
-

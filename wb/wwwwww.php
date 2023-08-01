@@ -10,30 +10,55 @@ function make_recovery_json_orders_file($path_recovery, $orderId, $supplyId, $ar
     make_new_dir_z($temp_path,0); // создаем папку с номером заказа
 
     $article =  make_rigth_file_name($article);
+    $article =  make_right_articl($article);
     file_put_contents($temp_path."/article.txt", $article);
-    $orderId = $orderId.";";
+// Если существует файл поставки, то открываем его 
+    if (file_exists($temp_path."/".$supplyId.".txt")) {
+        $str_file = file_get_contents($temp_path."/".$supplyId.".txt");
+        $arr_file = json_decode($str_file);
+        $sigh_order=0;
 
-    file_put_contents($temp_path."/".$supplyId.".txt", $orderId, FILE_APPEND); // добавляем данные в файл с накопительным итогом
+ //  перебираем все заказы из файла
+        foreach ($arr_file as $order) {
+            if ($order == $orderId) {
+                $sigh_order=1;
+            }
+        }
+        if ($sigh_order == 0) {
+            $arr_file[] = $orderId; // добавляем заказ в поставку
+            $filedata_json = json_encode($arr_file, JSON_UNESCAPED_UNICODE);
+            file_put_contents($temp_path."/".$supplyId.".txt", $filedata_json); // добавляем данные в файл с накопительным итогом
+        } else { // если заказ есть в поставке, то не пишем его туда
+            $arr_orderId = $arr_file; // сохраняем старые заказы
+            $filedata_json = json_encode($arr_orderId, JSON_UNESCAPED_UNICODE);
+            file_put_contents($temp_path."/".$supplyId.".txt", $filedata_json); // добавляем данные в файл с накопительным итогом
+        }
 
+    } else { // если файл не существует , то пишем первый заказ
+        $arr_orderId[] = $orderId; // добавляем в файл первый заказ
+        $filedata_json = json_encode($arr_orderId, JSON_UNESCAPED_UNICODE);
+        file_put_contents($temp_path."/".$supplyId.".txt", $filedata_json); // добавляем данные в файл с накопительным итогом 
+    }
+    
 
 }
 
-make_recovery_json_orders_file('reports\2023-08-01\2633\recovery', '66667777', 'WB-GI-53796161', '82402-ч') ;
+make_recovery_json_orders_file('reports\2023-08-01\2633\recovery', '66677337727', 'WB-GI-53796521', '82402-ч') ;
 
 
 
-$supplyId = 'WB-GI-53892210';
-$orderId = '962057195';
-$link_wb = 'https://suppliers-api.wildberries.ru/api/v3/supplies/'.$supplyId.'/orders';
-$res =  light_query_without_data($token_wb, $link_wb);
-echo "<pre>";
-print_r($res['orders']);
+// $supplyId = 'WB-GI-53892210';
+// $orderId = '962057195';
+// $link_wb = 'https://suppliers-api.wildberries.ru/api/v3/supplies/'.$supplyId.'/orders';
+// $res =  light_query_without_data($token_wb, $link_wb);
+// echo "<pre>";
+// print_r($res['orders']);
 
-foreach ($res['orders'] as $temp_orders) {
- if ($orderId == $temp_orders['id']) {
-    echo "<br>OK";
- }
-}
+// foreach ($res['orders'] as $temp_orders) {
+//  if ($orderId == $temp_orders['id']) {
+//     echo "<br>OK";
+//  }
+// }
 
 
 die('333');

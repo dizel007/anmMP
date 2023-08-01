@@ -124,7 +124,10 @@ usleep(300000); // трата на создание Поставки на сай
             make_sborku_one_article_one_zakaz ($token_wb, $supplyId['id'], $orderId);
         usleep(30000); // трата на времени на добавление товара в поставку  
             $result_insert_order_in_supply = test_find_order_in_supply ($token_wb, $orderId, $supplyId['id']); // Проверяем добав-ся заказ в поставку или нет
-
+        } else {
+            // если появился в поставке, то запишем его в файл восстновления 
+            make_recovery_json_orders_file($path_recovery, $orderId, $supplyId['id'], $key); 
+            continue;
 
         }
 

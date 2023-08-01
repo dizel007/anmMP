@@ -1,5 +1,5 @@
 <?php
-echo "Download Functions<br>";
+// echo "Download Functions<br>";
 /****************************************************************************************************************
 ****************************  Простой запрос на ВБ без данных **************************************
 ****************************************************************************************************************/
@@ -19,8 +19,8 @@ function light_query_without_data($token_wb, $link_wb){
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
 	curl_close($ch);
 	
-	echo     'Результат обмена (without Data): '.$http_code. "<br>";
-	
+		echo     '<br> Результат обмена (without Data): '.$http_code. "<br>";
+		
 	$res = json_decode($res, true);
 	
 	return $res;
@@ -45,9 +45,8 @@ function light_query_with_data($token_wb, $link_wb, $data){
 	
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
 	curl_close($ch);
-	
-	echo     'Результат обмена(with Data): '.$http_code. "<br>";
-	
+		echo     '<br>Результат обмена(with Data): '.$http_code. "<br>";
+
 	$res = json_decode($res, true);
 	// var_dump($res); // выводит результирующий массив
 	return $res;
@@ -74,7 +73,12 @@ $res = curl_exec($ch);
 $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
 curl_close($ch);
 
-echo     'Результат обмена PATCH: '.$http_code. "<br>";
+
+
+	echo     '<br>Результат обмена PATCH: '.$http_code;
+
+
+
 $res = json_decode($res, true);
 
 return $res;
@@ -92,6 +96,28 @@ function get_all_new_zakaz ($token_wb) {
 	$link_wb = 'https://suppliers-api.wildberries.ru/api/v3/orders/new';
 	$res = light_query_without_data($token_wb, $link_wb);
 	return $res;
+}
+
+
+/****************************************************************************************************************
+******************  Функция готовить информацию и запускает добавление товара в поставку *****************************
+****************************************************************************************************************/
+function make_sborku_one_article_one_zakaz ($token_wb, $supplyId, $orderId){
+    $data = array(
+        'supplyId' => $supplyId,
+        'orderId' => $orderId
+        );
+        $link_wb = 'https://suppliers-api.wildberries.ru/api/v3/supplies/'.$supplyId."/orders/".$orderId;
+    
+// echo "<br>$link_wb<br>"; // выводим ссылку на экран
+    
+    //  Запуск добавления товара в поставку - НЕВОЗВРАТНАЯ ОПЕРАЦИЯ ***********************************
+    // раскоментировать при работе
+        $res =  patch_query_with_data($token_wb, $link_wb, $data);
+
+        // echo "<pre>";
+        // print_r($res);
+return $res;
 }
 
 
@@ -167,7 +193,7 @@ foreach ($arr_temp_orders as $arr_sot_orders) {
 	unset($data); // 
 }
 
-echo "<br> МАССИВ Со стикерами не преобразованный РАЗБИТЫЙ ПО СОТНЯМ <br>";
+echo "<br> Массив со стикерами не преобразованный РАЗБИТЫЙ ПО СОТНЯМ <br>";
 echo "<pre>";
 print_r($arr_temp_res_stikers);
 
@@ -207,28 +233,19 @@ print_r($res_stikers);
 		$file_num=1; // временный порядковй номер для картинки
 		foreach ($res_stikers['stickers'] as $items) {
 		$filedata='';
-		$pdf->AddPage();
 
-		$file = "EXCEL/stik".$file_num.".png";
-		
+		$pdf->AddPage();
+		$file = $path_stikers_orders."/"."stik".$file_num.".png"; // создаем временный файл с картинкой QR кода.
 		$filedata = base64_decode($items['file']);
-		
 		file_put_contents($file, $filedata, FILE_APPEND); // добавляем данные в файл с накопительным итогом
 		$pdf->image($file,0,0,'PNG');
-
-
-
 		unlink ($file); // удалям пнг файлы, чтобы не копить их
 		
 		$file_num++;
 				}
 		// запись в пдф файл
-		$pdf_file = "№".$N_1C_zakaz."_stikers_(".$article.") ".count($res_stikers['stickers'])."шт.pdf";  
-		
-		if (file_exists("pdf/".$pdf_file)) {
-			$pdf_file=rand(0,100000)."_".$pdf_file; // если уже есть название такого файла
-		}
-		$pdf->Output("pdf/".$pdf_file, 'F');
+		$article_temp = make_rigth_file_name($article); // убираем все запрещенные символы из названия файла
+		$pdf_file = "№".$N_1C_zakaz."_stikers_(".$article_temp.") ".count($res_stikers['stickers'])."шт.pdf";  
 
 		$pdf->Output($path_stikers_orders."/".$pdf_file, 'F');
 
@@ -302,4 +319,35 @@ function make_right_articl($article) {
 				}
 			
 				return $new_article;
+}
+
+function make_rigth_file_name($temp_file_name) {
+$temp_file_name=str_replace('*','_',$temp_file_name);
+$temp_file_name=str_replace('/','_',$temp_file_name);
+$temp_file_name=str_replace('\'','_',$temp_file_name);
+$temp_file_name=str_replace(':','_',$temp_file_name);
+$temp_file_name=str_replace('?','_',$temp_file_name);
+$temp_file_name=str_replace('>','_',$temp_file_name);
+$temp_file_name=str_replace('<','_',$temp_file_name);
+$temp_file_name=str_replace('|','_',$temp_file_name);
+$right_file_name=str_replace('"','_',$temp_file_name);
+return $right_file_name;
+}
+
+
+// Функция вывода сообщения на экран 
+function output_print_comment($info_comment) {
+    usleep(10000); // трата на времени на добавление на вывод данных на экран
+    $stamp_date = date('Y-m-d H:i:s');
+    echo "<br>$stamp_date - $info_comment";
+    usleep(10000); // трата на времени на добавление на вывод данных на экран
+};
+
+// Функция создает директорию, если ее нет
+function make_new_dir_z($dir, $append) {
+
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, True);
+    } 
+
 }

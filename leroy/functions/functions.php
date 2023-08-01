@@ -95,9 +95,9 @@ function get_create_spisok_from_lerua($jwt_token, $art_catalog, $ship_status) {
 
   // *******************************  Количество запрашиваемых заказов **************************************
   
-  $dop_link = '?limit='.MAX_LIMIT_ORDERS;  // Дописваем максимальное количество Заказов
+  // $dop_link = '?limit='.MAX_LIMIT_ORDERS;  // Дописваем максимальное количество Заказов
 
-  // $dop_link = '?limit=30'; 
+  $dop_link = '?limit=30'; 
   // $dop_link = '';
   $link = 'https://api.leroymerlin.ru/marketplace/merchants/v1/parcels'.$id_parcel.$dop_link;
   

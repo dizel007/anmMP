@@ -19,7 +19,7 @@ function light_query_without_data($token_wb, $link_wb){
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
 	curl_close($ch);
 	
-		echo     '<br> Результат обмена (without Data): '.$http_code. "<br>";
+		echo     '<br> Результат обмена (SELECT without Data): '.$http_code;
 		
 	$res = json_decode($res, true);
 	
@@ -45,7 +45,7 @@ function light_query_with_data($token_wb, $link_wb, $data){
 	
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
 	curl_close($ch);
-		echo     '<br>Результат обмена(with Data): '.$http_code. "<br>";
+		echo     '<br>Результат обмена(SELECT with Data): '.$http_code. "<br>";
 
 	$res = json_decode($res, true);
 	// var_dump($res); // выводит результирующий массив
@@ -75,7 +75,7 @@ curl_close($ch);
 
 
 
-	echo     '<br>Результат обмена PATCH: '.$http_code;
+	echo     '<br>Результат обмена (PATCH): '.$http_code;
 
 
 
@@ -157,7 +157,7 @@ function get_orders_from_supply($token_wb, $supplyId) {
 
 // Разбиваем массив на 100 и менее заказов
 if (count($arr_orders)> 100) {
-	echo "<br><br>*************ПОПАЛИ В УСЛОВИЕ БОЛЬШЕ СОТНИ ЗАКАЗОВ//// *******<br><br>";	
+	echo "<br><br>****** ФОРМИРУЕМ МАССИВ СО СТИКЕРАМИ, ПОПАЛИ В УСЛОВИЕ БОЛЬШЕ СОТНИ ЗАКАЗОВ  *****<br><br>";	
 
 $kolvo_soten = 1;
 $j=0;

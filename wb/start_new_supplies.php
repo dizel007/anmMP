@@ -85,11 +85,11 @@ foreach ($new_arr_new_zakaz  as $key => $items) {
     $priznzak_ne_ves_massiv=0;
     $result_insert_order_in_supply = 777;
 
-output_print_comment("Разбираем артикул: $key"); // Вывод коммент-я на экран
+output_print_comment("<br><b>Разбираем артикул: $key </b>"); // Вывод коммент-я на экран
 
 //******************************************************************************************
     $time_script = count($new_arr_new_zakaz[$key]) * 50;
-    echo "<br>TimeScrtipt = $time_script";
+    echo "<br><b>TimeScript = $time_script</b>";
     set_time_limit($time_script);
 
     $right_article = make_right_articl($key);
@@ -111,6 +111,8 @@ usleep(300000); // трата на создание Поставки на сай
     //****  Запуск добавления товара в поставку - НЕВОЗВРАТНАЯ ОПЕРАЦИЯ ***********************************
     //****  раскоментировать при работе     -     НЕВОЗВРАТНАЯ ОПЕРАЦИЯ ***********************************
     //****  раскоментировать при работе     -     НЕВОЗВРАТНАЯ ОПЕРАЦИЯ *******************************
+    
+    echo "<br> Запускаем заказ $orderId на сборку";
     make_sborku_one_article_one_zakaz ($token_wb, $supplyId['id'], $orderId);
     $count_order_art++;
     
@@ -120,14 +122,15 @@ usleep(300000); // трата на создание Поставки на сай
 // Проверка того что заказ добавился в поставку
     for ($jjj = 0; $jjj < 10; $jjj++)  {  
         if ($result_insert_order_in_supply != 0) { // если заказа нет в поставке, то запускаем повтор добавления заказа в поставку
-            output_print_comment("Признак $jjj обмена = $result_insert_order_in_supply ; Старт ПОВТОРА доб-я Заказа: $orderId в Поставку: ".$supplyId['id'] ); // Вывод коммент-я на экран
+            output_print_comment("<b>(СБОЙ)</b>Признак $jjj обмена = $result_insert_order_in_supply ; Старт ПОВТОРА доб-я Заказа: $orderId в Поставку: ".$supplyId['id'] ); // Вывод коммент-я на экран
             make_sborku_one_article_one_zakaz ($token_wb, $supplyId['id'], $orderId);
         usleep(30000); // трата на времени на добавление товара в поставку  
             $result_insert_order_in_supply = test_find_order_in_supply ($token_wb, $orderId, $supplyId['id']); // Проверяем добав-ся заказ в поставку или нет
         } else {
             // если появился в поставке, то запишем его в файл восстновления 
+            output_print_comment("Норме цикла ($jjj); Заказ: $orderId появился в поставке:"); // Вывод коммент-я на экран
             make_recovery_json_orders_file($path_recovery, $orderId, $supplyId['id'], $key); 
-            continue;
+            break 1;
 
         }
 
@@ -232,58 +235,25 @@ if (isset($new_real_arr_orders)) { // проверят есть ли масси�
  *************    НОвый массив 1С с учетом облманых массивов по списываию данных с сайта ВБ
  ************************************************************************************************/
 output_print_comment("Формируем файл для 1С"); // Вывод коммент-я на экран
-make_1c_file ($arr_for_1C_file_temp, $new_arr_new_zakaz, $Zakaz_v_1c, $new_path);
-
-
-$xls = new PHPExcel();
-        $xls->setActiveSheetIndex(0);
-        $sheet = $xls->getActiveSheet();
-
-    $next_i = 1;
-        foreach ($arr_for_1C_file_temp  as $key => $q_items) {
-            $right_article = make_right_articl($key);
-             $sheet->setCellValue("A".$next_i, $right_article);
-             $sheet->setCellValue("C".$next_i, count($new_arr_new_zakaz[$key]));
-             // высчитываем среднюю цену за товар
-             $sum_q=0;
-             foreach ($q_items as $q_item) {
-                 $sum_q = $sum_q + $q_item['convertedPrice'];
-                 }
-              if (count($q_items) > 0) {   
-             $midlle_price_q= ($sum_q/count($q_items))/100;
-             $sheet->setCellValue("D".$next_i, $midlle_price_q); // цена за 1 шт товара
-              } else {
-                 $sheet->setCellValue("D".$next_i, "no data"); // цена за 1 шт товара
-              }
- 
-             $next_i++; // смешение по строкам
-         
-        }
-         
-         $objWriter = new PHPExcel_Writer_Excel2007($xls);
-         $rnd1000001 = "(".rand(0,10000).")";
-        
-         $file_name_1c_list_q = $Zakaz_v_1c."_".date('Y-m-d').$rnd1000001."_file_1C_(NEW).xlsx";
-         $objWriter->save($new_path."/".$file_name_1c_list_q);     
-
-
+// возвращаем название 1С файла
+$file_name_1c_list_q = make_1c_file ($arr_for_1C_file_temp, $new_arr_new_zakaz, $Zakaz_v_1c, $new_path);
 
 /******************************************************************************************
  *  ***************   Формируем архив со стикерами для данного Заказа
  ******************************************************************************************/
 make_stikers_zip ($ArrFileNameForZIP, $path_arhives, $Zakaz_v_1c, $path_stikers_orders, $new_path, $file_name_1c_list_q );
 
-echo "reports/".$path_arhives."/"."Stikers_".$Zakaz_v_1c." от ".date("Y-M-d").".zip";
-    $link_dowonload_stikers = $path_arhives."/"."Stikers_".$Zakaz_v_1c." от ".date("Y-M-d").".zip";
-    $zip_new = new ZipArchive();
-    $zip_new->open($path_arhives."/"."Stikers_".$Zakaz_v_1c." от ".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
+// echo "reports/".$path_arhives."/"."Stikers_".$Zakaz_v_1c." от ".date("Y-M-d").".zip";
+    $link_download_stikers = $path_arhives."/"."Stikers_".$Zakaz_v_1c." от ".date("Y-M-d").".zip";
+//     $zip_new = new ZipArchive();
+//     $zip_new->open($path_arhives."/"."Stikers_".$Zakaz_v_1c." от ".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
  
-    foreach ($ArrFileNameForZIP as $zips) {
-    $zip_new->addFile($path_stikers_orders."/".$zips, "$zips"); // Добавляем пдф файлы
- }
-    // $zip_new->addFile($new_path."/".$file_name_1c_list, "$file_name_1c_list"); // добавляем для 1С файл /// *****************
-    $zip_new->addFile($new_path."/".$file_name_1c_list_q, "$file_name_1c_list_q"); // добавляем для НОВЫЙ 1С файл /// *****************
-    $zip_new->close();   
+//     foreach ($ArrFileNameForZIP as $zips) {
+//     $zip_new->addFile($path_stikers_orders."/".$zips, "$zips"); // Добавляем пдф файлы
+//  }
+//     // $zip_new->addFile($new_path."/".$file_name_1c_list, "$file_name_1c_list"); // добавляем для 1С файл /// *****************
+//     $zip_new->addFile($new_path."/".$file_name_1c_list_q, "$file_name_1c_list_q"); // добавляем для НОВЫЙ 1С файл /// *****************
+//     $zip_new->close();   
 
 /******************************************************************************************
  *  ************************   Формируем JSON со списком поставок (Для продолжения обработки)
@@ -298,7 +268,7 @@ $recovery_array = ["token"             => $token_wb,
                    "json_path"         => $file_json_new,
                    "path_qr_supply"    => $path_qr_supply,
                    "path_arhives"      => $path_arhives,
-                   "downloads_stikers" => $link_dowonload_stikers,
+                   "downloads_stikers" => $link_download_stikers,
                    "Zakaz1cNumber"     => $Zakaz_v_1c];
 $recovery_data_json = json_encode($arr_supply, JSON_UNESCAPED_UNICODE);
 $file_recovery_data_json = $new_path."/not_ready_supply.json"; // создаем файл для продолжение перевода в доставку товаров
@@ -328,7 +298,7 @@ echo <<<HTML
   
   <input hidden type="text" name="path_qr_supply" value="$path_qr_supply">
   <input hidden type="text" name="path_arhives" value="$path_arhives">
-  <input hidden type="text" name="downloads_stikers" value="$link_dowonload_stikers">
+  <input hidden type="text" name="downloads_stikers" value="$link_download_stikers">
 
   
 

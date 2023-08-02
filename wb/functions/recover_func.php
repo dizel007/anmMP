@@ -30,16 +30,22 @@ function create_marker_recover_file($new_path) {
     $res =  light_query_without_data($token_wb, $link_wb);
     // echo "<pre>";
     // print_r($res['orders']);
+    
+    if (!isset($res)) {
+        output_print_comment("<b>СБОЙ</b> При запросе заказа в поставке ничего не вернулось в ответ"); // Вывод коммент-я на экран
+
+        $res =  light_query_without_data($token_wb, $link_wb); // повторный запрос // если первый ничего не прошел 
+    }
  foreach ($res['orders'] as $temp_orders) 
   {
         if ($orderId == $temp_orders['id']) {
-            echo "<br> Заказ: $orderId в Поставке: $supplyId(УСПЕШНО)";
+            output_print_comment("Заказ: $orderId в Поставке: $supplyId (УСПЕШНО)"); // Вывод коммент-я на экран
             return 0;
         }
         
-  } 
-  echo "<br> Заказа: $orderId НЕТ в Поставке: $supplyId (ОТКАЗ)";
-  return 1;
+  }
+  output_print_comment("<b>(СБОЙ)</b> Заказа: $orderId НЕТ в Поставке: $supplyId"); // Вывод коммент-я на экран
+   return 1;
 
  }
 
@@ -50,8 +56,8 @@ function make_recovery_json_orders_file($path_recovery, $orderId, $supplyId, $ar
     $temp_path = $path_recovery."/".$supplyId;
     make_new_dir_z($temp_path,0); // создаем папку с номером заказа
 
-    $article =  make_rigth_file_name($article);
-    $article =  make_right_articl($article);
+    // $article =  make_rigth_file_name($article);
+    // $article =  make_right_articl($article);
     file_put_contents($temp_path."/article.txt", $article);
 // Если существует файл поставки, то открываем его 
     if (file_exists($temp_path."/".$supplyId.".txt")) {

@@ -32,4 +32,5 @@ foreach ($arr_for_1C_file_temp  as $key => $q_items) {
 
  $file_name_1c_list_q = $Zakaz_v_1c."_".date('Y-m-d').$rnd1000001."_file_1C_(NEW_funck).xlsx";
  $objWriter->save($new_path."/".$file_name_1c_list_q);  
+ return $file_name_1c_list_q;
 }

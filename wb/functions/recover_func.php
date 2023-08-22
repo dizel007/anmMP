@@ -14,9 +14,9 @@ function create_marker_recover_file($new_path) {
 }
  //********************************************************************************************************************************* */
  // функция удаляет маркерный файл, что сборка закончилась
- function delete_marker_recover_file($new_path) {
+ function delete_marker_recover_file($path_recovery) {
     $file_recovery = 'not_ready_supply.xxx';
-    unlink($new_path.'/recovery/'.$file_recovery);
+    unlink($path_recovery.'/'.$file_recovery);
    }
    
  //********************************************************************************************************************************* */

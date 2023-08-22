@@ -108,6 +108,7 @@ function get_create_spisok_from_lerua($jwt_token, $art_catalog, $ship_status) {
 
 //   echo "<pre>";
 // print_r($list_all_sending );
+// die('fffffffffffffff');
 
   // Перебираем все отправления  и ищем новые (созданные)
   $dop_link = '/statuses';

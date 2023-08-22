@@ -34,7 +34,10 @@ function get_all_waiting_posts_for_need_date($token, $client_id, $date_query_ozo
     // awaiting_packaging - заказы ожидают сборку
     // awaiting_deliver   - заказы ожидают отгрузку 
 echo "<br>";
-echo $date_query_ozon;
+// echo $token."<br>";
+// echo $client_id."<br>";
+// echo $date_query_ozon."<br>";
+
 $temp_dop_day = "+".$dop_days_query.' day';
 $date_query_ozon_end = date('Y-m-d', strtotime($temp_dop_day, strtotime($date_query_ozon)));
 

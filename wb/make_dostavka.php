@@ -1,6 +1,9 @@
 <?php
 
 require_once "functions/functions.php";
+require_once "functions/recover_func.php";
+require_once "functions/send_mail_func.php";
+
 // require_once "functions/dop_moduls_for_orders.php";
 usleep(500000); // трата на транзакции на сайте ВБ (перевод состояния поставок)
 
@@ -11,15 +14,12 @@ $token_wb = $_POST['token'];
 $path_qr_supply =  $_POST['path_qr_supply'];
 $path_arhives  = $_POST['path_arhives'];
 $link_downloads_stikers = $_POST['downloads_stikers']; //
-
+$path_recovery = $_POST['path_recovery']; 
 $Zakaz_v_1c = $_POST['Zakaz1cNumber'];
 
 $data = file_get_contents($file_json);
 $arr_data = json_decode($data,true);
 
-// echo $wb_path."<br>";
-// echo $path_qr_supply."<br>";
-// echo $path_arhives."<br>";
 echo "Начали собирать Заказ :$Zakaz_v_1c.<br>";
 echo "<pre>";
 // print_r($arr_data);
@@ -62,50 +62,56 @@ echo <<<HTML
 
 HTML;
 
-// delete_marker_recover_file($new_path); // дошли до конца и удаляем маркерный файл о незаконченности выполения скрипта
-die('<br><br><br><br>ПЕРЕДАНО В ДОСТАВКУ');
 
 
- function put_supply_in_deliver ($token_wb, $supplyId){
-        $link_wb = "https://suppliers-api.wildberries.ru/api/v3/supplies/".$supplyId."/deliver";
-        echo "<br>$link_wb";
-    //  Запуск добавления товара в поставку - НЕВОЗВРАТНАЯ ОПЕРАЦИЯ ***********************************
-    // раскоментировать при работе
-        $res =  patch_query_with_data($token_wb, $link_wb, "");
-        echo "<pre>";
-        print_r($res);
-        return $res;
-}
+
+sendmail($Zakaz_v_1c, $link_downloads_stikers, $link_downloads_qr_codes);
+
+delete_marker_recover_file($path_recovery); // дошли до конца и удаляем маркерный файл о незаконченности выполения скрипта
+die('<br><br><br>ПЕРЕДАНО В ДОСТАВКУ');
 
 
-function get_qr_cod_supply($token_wb, $supplyId, $name_postavka, $path_qr_supply){
+//  function put_supply_in_deliver ($token_wb, $supplyId){
+//         $link_wb = "https://suppliers-api.wildberries.ru/api/v3/supplies/".$supplyId."/deliver";
+//         echo "<br>$link_wb";
+//     //  Запуск добавления товара в поставку - НЕВОЗВРАТНАЯ ОПЕРАЦИЯ ***********************************
+//     // раскоментировать при работе
+//         $res =  patch_query_with_data($token_wb, $link_wb, "");
+//         echo "<pre>";
+//         print_r($res);
+//         return $res;
+// }
 
 
-$dop_link="?type=png";  // QUERY PARAMETERS
-$link_wb  = "https://suppliers-api.wildberries.ru/api/v3/supplies/".$supplyId."/barcode".$dop_link;
+// function get_qr_cod_supply($token_wb, $supplyId, $name_postavka, $path_qr_supply){
 
-echo "<br>Заказ в поставку :$link_wb";
 
-$qr_supply = light_query_without_data($token_wb, $link_wb); // запрос QR кода поставки
-require_once "libs/fpdf/fpdf.php";
-//create pdf object
-$pdf = new FPDF('L','mm', array(151, 107));
-//add new page
-$pdf->AliasNbPages();
-$filedata=''; // очищаем строку для ввода данных
-$pdf->AddPage();
+// $dop_link="?type=png";  // QUERY PARAMETERS
+// $link_wb  = "https://suppliers-api.wildberries.ru/api/v3/supplies/".$supplyId."/barcode".$dop_link;
 
-$file = $path_qr_supply."/".$supplyId.".png"; // название пнг файлв с кьюР кодом
-$filedata = base64_decode($qr_supply['file']);
-    file_put_contents($file, $filedata, FILE_APPEND);
-$pdf->image($file,0,0,'PNG');
-unlink ($file); // удаляем png файл
+// echo "<br>Заказ в поставку :$link_wb";
 
-$pdf_file = "QR-code-".$name_postavka.".pdf"; // название PDF  которое сохраниться в итоге
-// $pdf->Output("pdf/$wb_path/".$pdf_file, 'F');
+// $qr_supply = light_query_without_data($token_wb, $link_wb); // запрос QR кода поставки
+// require_once "libs/fpdf/fpdf.php";
+// //create pdf object
+// $pdf = new FPDF('L','mm', array(151, 107));
+// //add new page
+// $pdf->AliasNbPages();
+// $filedata=''; // очищаем строку для ввода данных
+// $pdf->AddPage();
 
-$pdf->Output($path_qr_supply."/".$pdf_file, 'F');
+// $file = $path_qr_supply."/".$supplyId.".png"; // название пнг файлв с кьюР кодом
+// $filedata = base64_decode($qr_supply['file']);
+//     file_put_contents($file, $filedata, FILE_APPEND);
+// $pdf->image($file,0,0,'PNG');
+// unlink ($file); // удаляем png файл
 
-return $pdf_file;
-}
+// $name_postavka = make_rigth_file_name($name_postavka);
+// $pdf_file = "QR-code-".$name_postavka.".pdf"; // название PDF  которое сохраниться в итоге
+// // $pdf->Output("pdf/$wb_path/".$pdf_file, 'F');
+
+// $pdf->Output($path_qr_supply."/".$pdf_file, 'F');
+
+// return $pdf_file;
+// }
 

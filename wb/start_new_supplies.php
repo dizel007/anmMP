@@ -96,6 +96,30 @@ output_print_comment("<br><b>Разбираем артикул: $key </b>"); // 
     $name_postavka = $Zakaz_v_1c."-(".$right_article.") ".count($new_arr_new_zakaz[$key])."шт";
     // формируем одну поставку и туда суем весь товар с этим артикулом
     $supplyId = make_postavka ($token_wb, $name_postavka); // номер поставки
+    usleep(20000); // трата на создание Поставки 
+/*****************************************************************************************************************
+*  Вычитываем информацию о поставке. И вообще существует или она
+*********************************************************************************************************************/    
+$SupplayId_info = get_info_by_postavka ($token_wb, $supplyId['id']); // информация о поставке
+  if (!isset($SupplayId_info['id'])) {
+    output_print_comment("<b>(СБОЙ)</b> Поставка для арт.".$right_article." не создана. Название поставки :$name_postavka" ); 
+    for ($jjjj=0; $jjjj < 20; $jjjj ++) {
+        // unset($supplyId);
+        output_print_comment("Повторный($jjjj) из (20) запуск создания поставка для арт.$right_article Название поставки :$name_postavka" ); // Вывод коммент-я на экран
+        $supplyId = make_postavka ($token_wb, $name_postavka); // номер поставки
+        usleep(20000); // трата на создание Поставки 
+        $SupplayId_info = get_info_by_postavka ($token_wb, $supplyId['id']); // информация о поставке
+        if (isset($SupplayId_info['id'])) {
+            output_print_comment("(УСПЕШНО) Поставка для арт.$right_article создана, id поставки ".$supplyId['id']." на ($jjjj) цикле" ); // Вывод коммент-я на экран
+            break 1;    
+        }
+
+    }
+  } else {
+    output_print_comment("(УСПЕШНО) Поставка для арт.$right_article создана, id поставки ".$supplyId['id'] ); // Вывод коммент-я на экран
+  }
+//********************************************************************************************************************************** */
+
 usleep(300000); // трата на создание Поставки на сайте 1С
     $arr_supply[$right_article] =  array('supplayId'      =>  $supplyId['id'],
                                          'name_postavka'  =>  $name_postavka);
@@ -116,7 +140,7 @@ usleep(300000); // трата на создание Поставки на сай
     make_sborku_one_article_one_zakaz ($token_wb, $supplyId['id'], $orderId);
     $count_order_art++;
     
-    usleep(90000); // трата на времени на добавление товара в поставку  
+    usleep(30000); // трата на времени на добавление товара в поставку  
     
     $result_insert_order_in_supply = test_find_order_in_supply ($token_wb, $orderId, $supplyId['id']); // Проверяем добав-ся заказ в поставку или нет
 // Проверка того что заказ добавился в поставку
@@ -124,11 +148,13 @@ usleep(300000); // трата на создание Поставки на сай
         if ($result_insert_order_in_supply != 0) { // если заказа нет в поставке, то запускаем повтор добавления заказа в поставку
             output_print_comment("<b>(СБОЙ)</b>Признак $jjj обмена = $result_insert_order_in_supply ; Старт ПОВТОРА доб-я Заказа: $orderId в Поставку: ".$supplyId['id'] ); // Вывод коммент-я на экран
             make_sborku_one_article_one_zakaz ($token_wb, $supplyId['id'], $orderId);
-        usleep(30000); // трата на времени на добавление товара в поставку  
+        usleep(10000); // трата на времени на добавление товара в поставку  
             $result_insert_order_in_supply = test_find_order_in_supply ($token_wb, $orderId, $supplyId['id']); // Проверяем добав-ся заказ в поставку или нет
         } else {
             // если появился в поставке, то запишем его в файл восстновления 
+            if ($jjj != 0) { // если при первой итерации сразу попали сюда то не выводим это сообщение
             output_print_comment("Норме цикла ($jjj); Заказ: $orderId появился в поставке:"); // Вывод коммент-я на экран
+            }
             make_recovery_json_orders_file($path_recovery, $orderId, $supplyId['id'], $key); 
             break 1;
 
@@ -138,7 +164,7 @@ usleep(300000); // трата на создание Поставки на сай
 }
 
 
-usleep(500000); // трата на времени на добавление товара в поставку  
+usleep(300000); // трата на времени на добавление товара в поставку  
     $arr_real_orders = get_orders_from_supply($token_wb, $supplyId['id']); // список Заказов которые ТОЧНО полпали в Поставку
 
     foreach ($arr_real_orders as $orders) {
@@ -150,8 +176,8 @@ usleep(500000); // трата на времени на добавление то
         $priznzak_net_massiva = 1;
         // ecли этикеток нет, то снова делаем их запрос 
             for ($error_job = 0 ;$error_job < 12; $error_job++) {
-              output_print_comment("(ALARM)Нет Заказов в поставке:".$supplyId['id']." - цикл :$error_job"); // Вывод коммент-я на экран
-              usleep(200000); // 0,2 sec
+              output_print_comment("<b>(ALARM)</b>Нет Заказов в поставке:".$supplyId['id']." - цикл :$error_job"); // Вывод коммент-я на экран
+              usleep(100000); // 0,1 sec
                 $arr_real_orders_error = get_orders_from_supply($token_wb, $supplyId['id']); // список Заказов которые ТОЧНО полпали в Поставку
 
                 foreach ($arr_real_orders_error as $orders) {
@@ -176,12 +202,12 @@ if (count($new_real_arr_orders) < $count_order_art) {
           echo "<br>$stamp_date - (ALARM) Не хватает заказов в Поставкe - цикл:$jj";
     //******************************************************************************************
   
-            $real_temp_count = count($new_real_arr_orders);
+     $real_temp_count = count($new_real_arr_orders);
             unset($new_real_arr_orders);
             unset($arr_real_orders_error);
 
          output_print_comment("(ALARM) Не хватает Заказов в поставке ($real_temp_count), должно быть ($count_order_art)"); // Вывод коммент-я на экран
-         sleep(1); // тратим время перед следующим запросом
+         usleep(300000); // 0.3 sec тратим время перед следующим запросом
 
             $arr_real_orders_error = get_orders_from_supply($token_wb, $supplyId['id']); // список Заказов которые ТОЧНО полпали в Поставку
 
@@ -197,7 +223,10 @@ if (count($new_real_arr_orders) < $count_order_art) {
  }
 }
 
-// *********************  формируем и сохраняем стикеры себе на комп
+/*************************************************************************************************
+ *************    Формируем и сохраняем стикеры себе на комп
+ ************************************************************************************************/
+
 if (isset($new_real_arr_orders)) { // проверят есть ли массив 
     $ArrFileNameForZIP[] = get_stiker_from_supply ($token_wb, $new_real_arr_orders, $Zakaz_v_1c , $right_article , $path_stikers_orders); // формируем стикеры за этой поставки
 } else {
@@ -300,7 +329,7 @@ echo <<<HTML
   <input hidden type="text" name="path_arhives" value="$path_arhives">
   <input hidden type="text" name="downloads_stikers" value="$link_download_stikers">
 
-  
+  <input hidden type="text" name="path_recovery" value="$path_recovery">
 
   <input hidden type="text" name="Zakaz1cNumber" value="$Zakaz_v_1c">
   <input type="submit" value="В ДОСТАВКУ">

@@ -133,7 +133,18 @@ $data = array('name' => $name_postavka);
  return $res; // Возвращаем номер поставки
 }
 
+/****************************************************************************************************************
+************************************* Создаем поставку на сайте WB **************************************
+****************************************************************************************************************/
+function get_info_by_postavka ($token_wb, $supply_id) {
+	
+	 $link_wb = 'https://suppliers-api.wildberries.ru/api/v3/supplies/'.$supply_id;
+	 $res = light_query_without_data ($token_wb, $link_wb);
+	
+	 return $res; // Возвращаем номер поставки
+	}
 
+	
 /****************************************************************************************************************
 ************************************* Получаем заказы из одной поставки    **************************************
 ****************************************************************************************************************/
@@ -182,15 +193,54 @@ $j=0;
 echo "<br> МАССИВ РАЗБИТЫЙ ПО СОТНЯМ <br>";
 echo "<pre>";
 print_r($arr_temp_orders);
-
+$temp_count_soten_2 = 0;
 foreach ($arr_temp_orders as $arr_sot_orders) {
+
 	// массив с номерами заказа
 	$data = array(
 		"orders"=> $arr_sot_orders
 	);
 	// получаем данные со стикерами 
 	$arr_temp_res_stikers[] = light_query_with_data($token_wb, $link_wb, $data);
-	unset($data); // 
+
+/*************************************************************************************************************
+ ***************************  Если ВБ не вернулнам массив со стикерами
+ ***************************************************************************************************************/	
+
+if (!isset($arr_temp_res_stikers[$temp_count_soten_2]['stickers'])) {
+	for ($gg = 0; $gg < 20; $gg++) {
+		output_print_comment("<b>(СБОЙ)</b> Массив со стикерами ВБ не вернул. Повторный запрос №$gg") ;
+		$arr_temp_res_stikers[] = light_query_with_data($token_wb, $link_wb, $data); 
+		if (isset($arr_temp_res_stikers[$temp_count_soten_2]['stickers'])) { // если получили массив, то ыфходим из цикла
+			output_print_comment("<b>(УСПЕШНО)</b> Массив со стикерами Получили на запросе №$gg") ;
+			break 1;
+		}
+	}
+	}
+
+/*************************************************************************************************************
+ ***************************  Если ВБ вернул мало стикеров **********
+ ***************************************************************************************************************/		
+//  
+if (count($arr_temp_res_stikers[$temp_count_soten_2]['stickers']) != count($arr_sot_orders)) {
+	for ($gg = 0; $gg < 20; $gg++) {
+		output_print_comment("<b>(СБОЙ)</b> Не хватает стикеров факт (".count($arr_temp_res_stikers[$temp_count_soten_2]['stickers']).") должно быть (".count($arr_sot_orders)."); Повторный запрос №$gg");
+		$arr_temp_res_stikers[] = light_query_with_data($token_wb, $link_wb, $data); 
+
+		if (count($arr_temp_res_stikers[$temp_count_soten_2]['stickers']) == count($arr_orders)) { // если количество стикеров верное
+			output_print_comment("<b>(УСПЕШНО)</b> Все стикеры получили факт (".count($$arr_temp_res_stikers[$temp_count_soten_2]['stickers']).") должно быть (".count($arr_sot_orders). ") на запросе №$gg") ;
+		break 1;
+				}
+	}
+	}
+/*************************************************************************************************************
+ *************************** ЗАКОНЧИЛИ ПРОВЕРКУ МАССИВА БОЬШЕ СТОТНИ
+ ***************************************************************************************************************/	
+
+
+unset($data); // удаляем массив с данными
+$temp_count_soten_2++;
+output_print_comment("<b>(ИНФО)</b> стикеров факт (".count($arr_temp_res_stikers[$temp_count_soten_2]['stickers']).") должно быть(".count($arr_sot_orders).");<br>");
 }
 
 echo "<br> Массив со стикерами не преобразованный РАЗБИТЫЙ ПО СОТНЯМ <br>";
@@ -221,9 +271,35 @@ print_r($res_stikers);
 
   		// получаем данные со стикерами 
 		$res_stikers = light_query_with_data($token_wb, $link_wb, $data); 
+
+// Если ВБ не вернулнам массив со стикерами
+	if (!isset($res_stikers['stickers'])) {
+	for ($gg = 0; $gg < 20; $gg++) {
+		output_print_comment("<b>(СБОЙ)</b> Массив со стикерами ВБ не вернул. Повторный запрос №$gg") ;
+		$res_stikers = light_query_with_data($token_wb, $link_wb, $data); 
+		if (isset($res_stikers['stickers'])) { // если получили массив, то ыфходим из цикла
+			output_print_comment("<b>(УСПЕШНО)</b> Массив со стикерами Получили на запросе №$gg") ;
+			break 1;
+		}
+	}
+	}
+// если стикеров в массиве не хватаеи 
+	if (count($res_stikers['stickers']) != count($arr_orders)) {
+	for ($gg = 0; $gg < 20; $gg++) {
+		output_print_comment("<b>(СБОЙ)</b> Не хватает стикеров факт (".count($res_stikers['stickers']).") должно быть (".count($arr_orders)."); Повторный запрос №$gg");
+		$res_stikers = light_query_with_data($token_wb, $link_wb, $data); 
+
+		if (count($res_stikers['stickers']) == count($arr_orders)) { // если количество стикеров верное
+			output_print_comment("<b>(УСПЕШНО)</b> Все стикеры получили факт (".count($res_stikers['stickers']).") должно быть (".count($arr_orders). ") на запросе №$gg") ;
+		break 1;
+				}
+	}
+	}
+	output_print_comment("<b>(ИНФО)</b> стикеров факт (".count($res_stikers['stickers']).") должно быть(".count($arr_orders).");<br>");
 }	
 
-		// ФОРМИРУЕМ ПДФ файл
+
+// ***************** ФОРМИРУЕМ ПДФ файл ***************************
 		require_once "libs/fpdf/fpdf.php";
 		//create pdf object
 		$pdf = new FPDF('L','mm', array(80, 106)); // задаем пдф файл размером с пнг файл
@@ -252,9 +328,75 @@ print_r($res_stikers);
 		return $pdf_file; // возвращаем название ПДФ файла для формирования  архива;
 		}
 
+/****************************************************************************************************************
+************************************* Отправляем поставку в ДОСТАВКУ **** **************************************
+****************************************************************************************************************/
+
+		function put_supply_in_deliver ($token_wb, $supplyId){
+			$link_wb = "https://suppliers-api.wildberries.ru/api/v3/supplies/".$supplyId."/deliver";
+			echo "<br>$link_wb";
+		//  Запуск добавления товара в поставку - НЕВОЗВРАТНАЯ ОПЕРАЦИЯ ***********************************
+		// раскоментировать при работе
+			$res =  patch_query_with_data($token_wb, $link_wb, "");
+			echo "<pre>";
+			print_r($res);
+			return $res;
+	}
+
+/****************************************************************************************************************
+************************************* Получаем стикеры c QR кодами **** **************************************
+****************************************************************************************************************/
+
+		function get_qr_cod_supply($token_wb, $supplyId, $name_postavka, $path_qr_supply){
 
 
+			$dop_link="?type=png";  // QUERY PARAMETERS
+			$link_wb  = "https://suppliers-api.wildberries.ru/api/v3/supplies/".$supplyId."/barcode".$dop_link;
+			
+			echo "<br>Заказ в поставку :$link_wb";
+			
+			$qr_supply = light_query_without_data($token_wb, $link_wb); // запрос QR кода поставки
+// проверяем, что ВБ вернул данные с QR  кодом поставки
+			if (!isset($qr_supply['file'])) { 
+				for ($iii =0; $iii < 10; $iii++){
+					output_print_comment("<b>(СБОЙ)</b> цикл ($iii) из (10) Не получили QR-код поставки: $supplyId;");
+					$qr_supply = light_query_without_data($token_wb, $link_wb); // запрос QR кода поставки
+					if (isset($qr_supply['file']))  {
+						output_print_comment("(УСПЕШНО) получили QR-код поставки: $supplyId в ($iii) цикле;");
+						break 1;
+					}
+				
+				}  
+			} else {
+				output_print_comment("(УСПЕШНО) получили QR-код поставки: $supplyId;");
+			}
+				
+			require_once "libs/fpdf/fpdf.php";
+			//create pdf object
+			$pdf = new FPDF('L','mm', array(151, 107));
+			//add new page
+			$pdf->AliasNbPages();
+			$filedata=''; // очищаем строку для ввода данных
+			$pdf->AddPage();
+			
+			$file = $path_qr_supply."/".$supplyId.".png"; // название пнг файлв с кьюР кодом
+			$filedata = base64_decode($qr_supply['file']);
+				file_put_contents($file, $filedata, FILE_APPEND);
+			$pdf->image($file,0,0,'PNG');
+			unlink ($file); // удаляем png файл
+			
+			$name_postavka = make_rigth_file_name($name_postavka);
+			$pdf_file = "QR-code-".$name_postavka.".pdf"; // название PDF  которое сохраниться в итоге
+			// $pdf->Output("pdf/$wb_path/".$pdf_file, 'F');
+			
+			$pdf->Output($path_qr_supply."/".$pdf_file, 'F');
+			
+			return $pdf_file;
+			}
 
+/****************************************************************************************************************
+************************************* Формируем актуальные артикулы  *******************************************
+****************************************************************************************************************/
 
 
 function make_right_articl($article) {
@@ -321,6 +463,11 @@ function make_right_articl($article) {
 				return $new_article;
 }
 
+
+/****************************************************************************************************************
+************************************* убиарем из названия файлов запрещенные символы ****************************
+****************************************************************************************************************/
+
 function make_rigth_file_name($temp_file_name) {
 $temp_file_name=str_replace('*','_',$temp_file_name);
 $temp_file_name=str_replace('/','_',$temp_file_name);
@@ -335,7 +482,11 @@ return $right_file_name;
 }
 
 
-// Функция вывода сообщения на экран 
+ 
+/****************************************************************************************************************
+************************************* Функция вывода сообщения на экран  ****************************
+****************************************************************************************************************/
+
 function output_print_comment($info_comment) {
     usleep(10000); // трата на времени на добавление на вывод данных на экран
     $stamp_date = date('Y-m-d H:i:s');
@@ -343,7 +494,11 @@ function output_print_comment($info_comment) {
     usleep(10000); // трата на времени на добавление на вывод данных на экран
 };
 
-// Функция создает директорию, если ее нет
+
+/****************************************************************************************************************
+************************************* Функция создает директорию, если ее нет  ****************************
+****************************************************************************************************************/
+
 function make_new_dir_z($dir, $append) {
 
     if (!is_dir($dir)) {

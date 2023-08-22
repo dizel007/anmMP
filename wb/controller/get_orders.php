@@ -30,7 +30,7 @@ foreach ($new_arr_orders as $key=>$orders) {
                                                       'price' => $middle_price);
 }
 
-echo "<b>Общее количество ВБ:".$all_count."</b><br>";
+echo "<br><b>Общее количество ВБ:".$all_count."</b><br>";
 echo "<b>Общее стоимость  ВБ:".number_format($full_price,2)."</b><br>";
 
 echo <<<HTML
@@ -53,7 +53,7 @@ unset($raw_arr_orders);
 unset($new_arr_orders);
 unset($sum_arr_article);
 } else {
- echo "<b>Нет ЗАКАЗОВ НА ВБ (ООО ТД АНМАКС)</b>"  ;
+ echo "<br><b>Нет ЗАКАЗОВ НА ВБ (ООО ТД АНМАКС)</b>"  ;
 }
 
 echo "<hr>";
@@ -84,7 +84,7 @@ echo "<hr>";
                                                        'price' => $middle_price);
  }
  
- echo "<b>Общее количество ВБ ИП:".$all_count."</b><br>";
+ echo "<br><b>Общее количество ВБ ИП:".$all_count."</b><br>";
  echo "<b>Общее стоимость  ВБ ИП:".number_format($full_price,2)."</b><br>";
  
 
@@ -110,7 +110,7 @@ show_orders ($sum_arr_article);
  unset($new_arr_orders);
  unset($sum_arr_article);
 } else {
-  echo "<b>Нет ЗАКАЗОВ НА ВБ (ИП Горячев)</b>"  ;
+  echo "<br><b>Нет ЗАКАЗОВ НА ВБ (ИП Горячев)</b>"  ;
  }
 
 /*******************************************************************************************************/

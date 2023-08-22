@@ -17,7 +17,7 @@ function sendmail($Zakaz_v_1c, $link_downloads_stikers, $link_downloads_qr_codes
         
             $mail->SMTPAuth = true;                               // Enable SMTP authentication
             $mail->Username = 'markets@anmarkets.ru';             // Наш логин
-            $mail->Password = 'pYeiobiC4ZiZL134';                 // Наш пароль от ящика
+            $mail->Password = '';                 // Наш пароль от ящика
     
             $mail->setFrom('markets@anmarkets.ru', 'Разбор МП');   // От кого письмо 
     

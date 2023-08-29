@@ -5,11 +5,14 @@ ozon/functions/torpen.php
 
 wb/functions/topen.php
 
+wb/functions/send_mail_func.php
+
+
 leroy/EXCEL/
 
 ozon/EXCEL/
 
-wb/EXCEL/
+ozon/reports/
 
 wb/json_supply/
 

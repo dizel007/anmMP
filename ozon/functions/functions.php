@@ -76,3 +76,20 @@ $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_dop_url );
 return $res;
 }
 
+
+/****************************************************************************************************************
+************************************* убиарем из названия файлов запрещенные символы ****************************
+****************************************************************************************************************/
+
+function make_rigth_file_name($temp_file_name) {
+    $temp_file_name=str_replace('*','_',$temp_file_name);
+    $temp_file_name=str_replace('/','_',$temp_file_name);
+    $temp_file_name=str_replace('\'','_',$temp_file_name);
+    $temp_file_name=str_replace(':','_',$temp_file_name);
+    $temp_file_name=str_replace('?','_',$temp_file_name);
+    $temp_file_name=str_replace('>','_',$temp_file_name);
+    $temp_file_name=str_replace('<','_',$temp_file_name);
+    $temp_file_name=str_replace('|','_',$temp_file_name);
+    $right_file_name=str_replace('"','_',$temp_file_name);
+    return $right_file_name;
+    }

@@ -1,5 +1,11 @@
 <?php
 require_once "require_funcs.php"; // все функции
+require_once "controller/function_make_1c_file.php";
+
+require_once '../libs/PHPExcel-1.8/Classes/PHPExcel.php';
+require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/Writer/Excel2007.php';
+require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
+require_once "functions/excel_style.php";
 
 
 
@@ -22,15 +28,23 @@ HTML;
 
 $new_array_create_sends = get_create_spisok_from_lerua($jwt_token, $art_catalog, 'created');
 
+echo "NEN ";
 
-
-
+// echo "<pre>";
+// print_r($new_array_create_sends);
 
 
 if (isset($new_array_create_sends)) {
     echo "<h2>Неподтвержденные позиции (лимит ".MAX_LIMIT_ORDERS." заказов)</h2>";
     make_spisok_sendings ($new_array_create_sends);
 echo "<a href=\"controller\make_gruzomesta.php\">Разобрать по грузоместам и подтвердить ВСЕ Заказы </a>";
+
+/*****************************************************************************************************************************
+ * ****************** пробууем сделать 1С предфайл
+ ******************************************************************************************************************************/
+$xls = new PHPExcel();
+$link_list_tovarov =  make_file_for_1c ($new_array_create_sends, $art_catalog,  $xls );
+
 } else {
     echo "<h2>НЕТ НЕподтвержденных позиций</h2>";  
 }
@@ -72,8 +86,11 @@ if (isset($_GET['date_complete_leroy']) AND ($_GET['type_query'] == "345")) {
 
     if (isset($new_array_packingStarted)) {
         make_spisok_sendings ($new_array_packingStarted);
-       
+
         echo "<a href=\"controller\complete_all_zakaz.php?date_complete_leroy=$date_complete_leroy\"><h2>Скомплектовать ВСЕ Заказы </h2></a>";
+        // Создаем файл для с количеством товаров для Заказа-клиента 1С
+    
+
         } else {
             echo "<h2><b>НЕТ ПОДТВЕРЖДЕННЫХ заказов</b> на эту ДАТУ ($date_complete_leroy)</h2>";  
             

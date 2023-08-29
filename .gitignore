@@ -1,21 +1,20 @@
 
 leroy/functions/topen.php
-
 ozon/functions/torpen.php
-
 wb/functions/topen.php
 
+
 wb/functions/send_mail_func.php
+wb/functions/
+
 
 
 leroy/EXCEL/
-
 ozon/EXCEL/
-
 ozon/reports/
+wb/reports/
 
 wb/json_supply/
 
-wb/reports/
 
 wb/zip_arc/

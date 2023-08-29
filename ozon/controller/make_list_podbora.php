@@ -30,7 +30,8 @@ foreach ($array_oben as $array_items) {
 $i--;
 $sheet2->setCellValue("A".$i, "Процесс сборки завершен");
 $objWriter2 = new PHPExcel_Writer_Excel2007($xls2);
-$file_name_list_podbora = $date_query_ozon.$rnd100000."_file_list_podbor.xlsx";
+
+$file_name_list_podbora = $date_query_ozon.$rand10000."_file_list_podbor.xlsx";
 $objWriter2->save("../EXCEL/".$file_name_list_podbora);
 $link_list_podbora = "../EXCEL/".$file_name_list_podbora;
 

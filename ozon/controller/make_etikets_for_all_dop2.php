@@ -9,50 +9,28 @@ require_once '../../libs/PHPExcel-1.8/Classes/PHPExcel/Writer/Excel2007.php';
 require_once '../../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
 
 if (isset($_GET['date_query_ozon'])) {
-  $date_query_ozon = $_GET['date_query_ozon'];
-  $new_path = '../reports/'.$date_query_ozon."/";
-  make_new_dir_z($new_path,0); // создаем папку с датой
-  $path_etiketki = $new_path.'etiketki';
-  make_new_dir_z($path_etiketki,0); // создаем папку с датой
-  $path_excel_docs = $new_path.'excel_docs';
-  make_new_dir_z($path_excel_docs,0); // создаем папку с датой
-  $path_zip_archives = $new_path.'zip_archives';
-  make_new_dir_z($path_zip_archives,0); // создаем папку с датой
+    $date_query_ozon = $_GET['date_query_ozon'];
 
+
+    $new_path = '../reports/'.$date_query_ozon."/";
+    $path_etiketki = $new_path.'etiketki';
+    $path_excel_docs = $new_path.'excel_docs';
+    $path_zip_archives = $new_path.'zip_archives';
+    
+
+    echo  $date_query_ozon;
 } 
   else {echo "<br> Дата сортировки не выбрана"; die('DIE*DIE*DIE');}
 
-if (isset($_GET['nomer_zakaz'])) {$nomer_zakaz = $_GET['nomer_zakaz'];} 
-  else {echo "<br> Не получен номер заказа"; }
-
-if (isset($_GET['path_etiketki'])) { $path_etiketki = $_GET['path_etiketki'];}
- else {
-  echo "<br> Нет пути директории"; 
-      }
-if (isset($_GET['path_excel_docs'])) { $path_excel_docs = $_GET['path_excel_docs']; } 
- else { echo "<br> Нет пути директории"; }
-
-if (isset($_GET['path_zip_archives'])) { $path_zip_archives = $_GET['path_zip_archives'];} 
-  else {echo "<br> Нет пути директории";}
-
-// if (isset($_GET['file_name_1c_list'])) {$file_name_1c_list = $_GET['file_name_1c_list'];} 
-//   else { echo "<br> Нет пути к 1c файлу";}
-
-if (isset($_GET['file_name_list_podbora'])) {$file_name_list_podbora = $_GET['file_name_list_podbora'];} 
-  else { echo "<br> Нет пути к листу подбора"; }
-
-    
-  
-echo  $date_query_ozon;
+  $nomer_zakaz = $_GET['nomer_zakaz'];
 // Получаем списрк заказов готовых к отправлению (Берем только на выбранное число)
 $res = get_all_waiting_posts_for_need_date($token, $client_id, $date_query_ozon, "awaiting_deliver",0);
-
 
 
 /******************************************************************************************************************
 ******  формирование 1С файла 
 /******************************************************************************************************************/
-    $xls = new PHPExcel();
+   $xls = new PHPExcel();
    $file_name_1c_list = make_1c_file($res, $date_query_ozon, $nomer_zakaz, $path_excel_docs, $xls);
 
 /******************************************************************************************************************
@@ -100,7 +78,7 @@ echo "Строка заказов артикула: $string_etiket<br>";
  ******************************************************************************************************************/
 $good_key = make_rigth_file_name($key); // убираем все запрещенные символы в наименовании файла
 
-$pdf_file_name = $nomer_zakaz." (".$good_key.") ".count($posts)."шт";
+$pdf_file_name = $nomer_zakaz." (".$good_key.") ".count($posts)."шт(dop)";
 get_all_barcodes_for_all_sending ($token, $client_id,  $string_etiket, $pdf_file_name, $path_etiketki);
 $Arr_filenames_for_zip[] = $pdf_file_name.".pdf"; // массив в названиями пдф фаилами (чтобы а ЗИП архив их добавить)
 }
@@ -110,7 +88,7 @@ $Arr_filenames_for_zip[] = $pdf_file_name.".pdf"; // массив в назва�
  ******  Формируем ZIP архив с этикетаксм и 1С файлом и листом подбора
  ******************************************************************************************************************/
   $zip_new = new ZipArchive();
-  $zip_new->open($path_zip_archives."/"."etikets".$nomer_zakaz." от ".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
+  $zip_new->open($path_zip_archives."/"."etikets ".$nomer_zakaz." от ".date("Y-M-d")."(dop).zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
   foreach ($Arr_filenames_for_zip as $zips) {
   $zip_new->addFile($path_etiketki."/".$zips, "$zips"); // Добавляем пдф файлы
 }
@@ -120,12 +98,11 @@ if (isset($file_name_list_podbora)){
 }
   $zip_new->close();  
 
-  $link_path_zip2 = $path_zip_archives."/"."etikets ".$nomer_zakaz." от ".date("Y-M-d")."(dop).zip"; //  ссылка чтобы скачать архив
+ $link_path_zip2 = $path_zip_archives."/"."etikets ".$nomer_zakaz." от ".date("Y-M-d")."(dop).zip"; //  ссылка чтобы скачать архив
 
-  echo <<<HTML
-  <br><br>
-  <a href="$link_path_zip2"> скачать архив со стикерамии листом подбора</a>
-  <br><br>
-  HTML;
-
+echo <<<HTML
+<br><br>
+<a href="$link_path_zip2"> скачать архив со стикерамии листом подбора</a>
+<br><br>
+HTML;
 die ('<br> Дошли до финиша');

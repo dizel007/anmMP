@@ -12,6 +12,13 @@ echo <<<HTML
 <td class="main_screen"><a href="leroy/"><img src="pics/leroy.jpg"></a></td>
 </tr>
 
+<tr>
+
+<td class="main_screen"></td>
+<td class="main_screen"><a href="ozon/ozon_get_stikers.php"><img src="pics/ozov_sklad.jpg"></td>
+<td class="main_screen"></td>
+</tr>
+
 
 </table>
 

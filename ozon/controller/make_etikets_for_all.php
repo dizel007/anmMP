@@ -120,7 +120,7 @@ if (isset($file_name_list_podbora)){
 }
   $zip_new->close();  
 
-  $link_path_zip2 = $path_zip_archives."/"."etikets ".$nomer_zakaz." от ".date("Y-M-d")."(dop).zip"; //  ссылка чтобы скачать архив
+  $link_path_zip2 = $path_zip_archives."/"."etikets ".$nomer_zakaz." от ".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
 
   echo <<<HTML
   <br><br>

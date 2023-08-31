@@ -4,11 +4,13 @@ leroy/functions/topen.php
 ozon/functions/torpen.php
 wb/functions/topen.php
 
+mp_sklad/function/topen.php
+mp_sklad/function/torpen.php
+
+parce_xml_upd/functions/topen.php
 
 wb/functions/send_mail_func.php
-
-send_mail_func.php
-
+main_screen/password_2.php
 
 leroy/EXCEL/
 ozon/EXCEL/

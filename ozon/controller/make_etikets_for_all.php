@@ -110,7 +110,7 @@ $Arr_filenames_for_zip[] = $pdf_file_name.".pdf"; // массив в назва�
  ******  Формируем ZIP архив с этикетаксм и 1С файлом и листом подбора
  ******************************************************************************************************************/
   $zip_new = new ZipArchive();
-  $zip_new->open($path_zip_archives."/"."etikets".$nomer_zakaz." от ".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
+  $zip_new->open($path_zip_archives."/"."etikets_№".$nomer_zakaz." от ".date("Y-M-d").".zip", ZipArchive::CREATE|ZipArchive::OVERWRITE);
   foreach ($Arr_filenames_for_zip as $zips) {
   $zip_new->addFile($path_etiketki."/".$zips, "$zips"); // Добавляем пдф файлы
 }
@@ -120,7 +120,7 @@ if (isset($file_name_list_podbora)){
 }
   $zip_new->close();  
 
-  $link_path_zip2 = $path_zip_archives."/"."etikets ".$nomer_zakaz." от ".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
+  $link_path_zip2 = $path_zip_archives."/"."etikets_№".$nomer_zakaz." от ".date("Y-M-d").".zip"; //  ссылка чтобы скачать архив
 
   echo <<<HTML
   <br><br>

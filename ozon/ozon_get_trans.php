@@ -21,9 +21,9 @@ HTML;
 // require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/Writer/Excel2007.php';
 // require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
 
-$date_from = "2023-07-01";
-$date_to = "2023-07-31";
-
+$date_from = "2023-06-01";
+$date_to = "2023-06-30";
+echo "Период запроса с ($date_from) по  ($date_to)<br>";
 $ozon_link = 'v3/finance/transaction/list';
 $send_data = array(
     "filter" => array(

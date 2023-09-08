@@ -9,7 +9,7 @@ echo <<<HTML
     <td>пп</td>
     <td>Наименование</td>
     <td>Ко-во</td>
-    <td>сум к переводу <br> (с сервисн. сборам)</td>
+    <td>сумма к переводу <br> (с сервисн. сборами)</td>
     <td>% от суммы <br> к переводу</td>
     <td>сумма к вычитанию <br>(сервиные сборы)</td>
     <td>сумма к переводу факт<br>(без сервис. сборов)</td>
@@ -46,9 +46,9 @@ foreach ($arr_atricrle as $key=>$prod) {
     $sum_row_perevod_fact_temp = number_format($sum_row_perevod_fact,2);
     $price_row_one_item = $sum_row_perevod_fact/$qty;
     $price_row_one_item_temp = number_format($price_row_one_item,2);
-    $logistika_one_item = number_format($logistika/$qty,2);
-    $sborka_one_item = number_format($sborka/$qty,2);
-    $lastMile_one_item = number_format($lastMile/$qty,2);
+    $logistika_one_item = number_format(-$logistika/$qty,0);
+    $sborka_one_item = number_format(-$sborka/$qty,0);
+    $lastMile_one_item = number_format(-$lastMile/$qty,0);
 
     ////// подбираем артикул из каталога ;
     foreach ($ozon_catalog as $ozon_item) { 
@@ -89,9 +89,9 @@ echo <<<HTML
     <td>$delta_za_item_temp</td>
 <td><b>$row_we_get_money_temp</b></td>
     <td>$sale_commission</td>
-    <td>$logistika <br> $logistika_one_item</td>
-    <td>$sborka<br>$sborka_one_item</td>
-    <td>$lastMile<br>$lastMile_one_item</td>
+    <td>$logistika <br> ($logistika_one_item руб)</td>
+    <td>$sborka<br>($sborka_one_item руб)</td>
+    <td>$lastMile<br>($lastMile_one_item руб)</td>
     <td>$summa_NACHILS</td>
  </tr>
     

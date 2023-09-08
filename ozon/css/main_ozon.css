@@ -1,5 +1,5 @@
 .prod_table {
-	width: 90%;
+	width: 100%;
 	margin-bottom: 20px;
 	border: 1px solid #000000;
 	border-collapse: collapse; 
@@ -40,4 +40,27 @@
 }
 .prod_table_2 tr:nth-child(even){
 	background: #9dee9d;
+}
+
+
+.prod_table_small {
+	width: 50%;
+	margin-bottom: 20px;
+	border: 1px solid #000000;
+	border-collapse: collapse; 
+}
+
+.prod_table_small td{
+	border: 1px solid #000000;
+	padding: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+	text-align: center;
+}
+
+.prod_table_small tr:nth-child(odd){
+	background: #fff;
+}
+.prod_table_small tr:nth-child(even){
+	background: #ebdddd;
 }

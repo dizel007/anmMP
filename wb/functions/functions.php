@@ -242,8 +242,10 @@ if (count($arr_temp_res_stikers[$temp_count_soten_2]['stickers']) != count($arr_
 
 
 unset($data); // удаляем массив с данными
-$temp_count_soten_2++;
+
 output_print_comment("<b>(ИНФО)</b> стикеров факт (".count($arr_temp_res_stikers[$temp_count_soten_2]['stickers']).") должно быть(".count($arr_sot_orders).");<br>");
+
+$temp_count_soten_2++;
 }
 
 echo "<br> Массив со стикерами не преобразованный РАЗБИТЫЙ ПО СОТНЯМ <br>";

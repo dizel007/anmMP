@@ -46,7 +46,10 @@ foreach ($arr_orders as $items) {
 
 unset($hud);
 
-// require_once "ozon_get_trans_4.php"; // вывод на экран таблицы
+
+
+// print_r($arr_atricrle);
+// die();
 
 
 

@@ -1,6 +1,6 @@
 <?php
-
-
+$ozon_catalog = get_catalog_ozon ();
+$ozon_sebest = get_sebestiomost_ozon ();
     $one_procent_from_sum_amount =  $sum_amount/100; // один процент от суммы к перечислению за все товары
 
 echo <<<HTML
@@ -14,6 +14,9 @@ echo <<<HTML
     <td>сумма к вычитанию <br>(сервиные сборы)</td>
     <td>сумма к переводу факт<br>(без сервис. сборов)</td>
   <td><b>К НАМ на счет<br> за шт</b></td>
+    <td>Себестоимость</td>
+    <td>Дельта руб <br> за шт</td>
+    <td>Заработали руб <br> на артикуле</td>
     <td>сумма<br> комиссии ВБ</td>
     <td>Логистика<br> Логистика шт</td>
     <td>сборка<br> сборка шт</td>
@@ -26,6 +29,7 @@ HTML;
 $i=1;
 foreach ($arr_atricrle as $key=>$prod) {
     $name = $arr_atricrle[$key]['name'];
+
     $qty = $arr_atricrle[$key]['count'];
     $amount = $arr_atricrle[$key]['amount'] ;
     $sale_commission = $arr_atricrle[$key]['sale_commission'] ;
@@ -45,25 +49,45 @@ foreach ($arr_atricrle as $key=>$prod) {
     $logistika_one_item = number_format($logistika/$qty,2);
     $sborka_one_item = number_format($sborka/$qty,2);
     $lastMile_one_item = number_format($lastMile/$qty,2);
-// Считаем стольбы с суммами
-    // $sum_amount = @$sum_amount+ $amount;
-    // $sum_sale_commission = @$sum_sale_commission + $sale_commission;
-    // $sum_logistika = @$sum_logistika+ $logistika;
-    // $sum_sborka = @$sum_sborka + $sborka;
-    // $sum_lastMile = @$sum_lastMile + $lastMile;
-    // $sum_nas_all = @$sum_nas_all + $summa_NACHILS; // сумма начислений с сервисными сборами
 
-// $name_temp = substr($name, -30); 
+    ////// подбираем артикул из каталога ;
+    foreach ($ozon_catalog as $ozon_item) { 
+        if ($key == $ozon_item['sku']) {
+              $article = $ozon_item['article'];
+            break;
+        } else {
+            $article = "NO DATA";
+        }
+    }
+////// подбираем себестоимость из каталога ;
+foreach ($ozon_sebest as $ozon_item2) { 
+    if ($key == $ozon_item2['sku']) {
+          $sebestoimost = $ozon_item2['sebestoimost'];
+        break;
+    } else {
+        $sebestoimost = 0;
+    }
+}
+if ($sebestoimost == 0) {$sebestoimost = $price_row_one_item;}
+$sebestoimost_temp = number_format($sebestoimost,2);
+$delta_za_item = $price_row_one_item - $sebestoimost;
+$delta_za_item_temp = number_format($delta_za_item,2);
+
+$row_we_get_money = $delta_za_item * $qty;
+$row_we_get_money_temp = number_format($row_we_get_money,2);
 echo <<<HTML
 <tr>
     <td>$i</td>
-    <td>$name</td>
+    <td><b>$article<b></td>
     <td>$qty</td>
     <td>$amount</td>
     <td>$proc_row_temp</td>
     <td>$sum_row_ruble_temp</td>
     <td>$sum_row_perevod_fact_temp</td>
 <td><b>$price_row_one_item_temp</b></td>
+    <td>$sebestoimost_temp</td>
+    <td>$delta_za_item_temp</td>
+<td><b>$row_we_get_money_temp</b></td>
     <td>$sale_commission</td>
     <td>$logistika <br> $logistika_one_item</td>
     <td>$sborka<br>$sborka_one_item</td>
@@ -75,6 +99,7 @@ HTML;
 $sum_proc = @$sum_proc +   $proc_row ;
 $sum_row_ruble_sum = @$sum_row_ruble_sum  + $sum_row_ruble ;
 $sum_k_prervodu_fact = @$sum_k_prervodu_fact  + $sum_row_perevod_fact ;
+$sum_zarabotali = @$sum_zarabotali + $row_we_get_money;
 $i++;
 }
 
@@ -90,6 +115,8 @@ $i++;
     $sum_proc_temp = number_format($sum_proc,2);
     $sum_row_ruble_sum_temp = number_format($sum_row_ruble_sum,2);
     $sum_k_prervodu_fact_temp = number_format($sum_k_prervodu_fact,2);
+    $sum_zarabotali_temp = number_format($sum_zarabotali,2);
+
 echo <<<HTML
 <tr>
     <td></td>
@@ -100,6 +127,9 @@ echo <<<HTML
     <td>$sum_row_ruble_sum_temp</td>
     <td>$sum_k_prervodu_fact_temp</td>
     <td></td>
+    <td></td>
+    <td></td>
+    <td><b>$sum_zarabotali_temp</b></td>
     <td>$sum_sale_commission_temp</td>
     <td>$sum_logistika_temp</td>
     <td>$sum_sborka_temp</td>

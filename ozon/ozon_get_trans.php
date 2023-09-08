@@ -4,6 +4,8 @@
 *********************************************************************************************************/
 
 require_once 'include_funcs.php';
+require_once '../mp_sklad/functions/ozon_catalog.php';
+require_once "ozon_get_trans_6(sebes).php";
 
 echo <<<HTML
 <head>
@@ -19,8 +21,8 @@ HTML;
 // require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/Writer/Excel2007.php';
 // require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
 
-$date_from = "2023-08-01";
-$date_to = "2023-08-31";
+$date_from = "2023-07-01";
+$date_to = "2023-07-31";
 
 $ozon_link = 'v3/finance/transaction/list';
 $send_data = array(

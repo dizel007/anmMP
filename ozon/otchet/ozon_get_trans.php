@@ -3,8 +3,8 @@
  *     ***************    Получаем массив всех транзакций
 *********************************************************************************************************/
 
-require_once 'include_funcs.php';
-require_once '../mp_sklad/functions/ozon_catalog.php';
+require_once '../include_funcs.php';
+require_once '../../mp_sklad/functions/ozon_catalog.php';
 require_once "ozon_get_trans_6(sebes).php";
 
 echo <<<HTML

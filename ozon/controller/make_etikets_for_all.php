@@ -66,7 +66,7 @@ $array_oben = json_decode($json_arr_obmen, true);
 echo "<br> Массив для создания Листа подбора  <br>";
 echo "<pre>";
 $xls2 = new PHPExcel();
-$file_name_list_podbora = make_list_podbara ($array_oben, $date_query_ozon, $nomer_zakaz, $path_excel_docs, $xls2);
+$file_name_list_podbora = make_list_podbora_new ($array_oben, $date_query_ozon, $nomer_zakaz, $path_excel_docs, $xls2);
 } else { 
   echo "Нет файла для формирования листа подбора";
   // unset($file_name_list_podbora);

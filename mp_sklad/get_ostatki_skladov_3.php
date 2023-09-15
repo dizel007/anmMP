@@ -213,7 +213,9 @@ foreach ($arr_catalog as $items) {
 // Подсвечиваем неточные количсетва
 if ($quantity > $quantity_1c - $sell_count) {
     $alarm_class= "alarm";
-}else {
+} else if ($quantity == $value_in_wb_bd){
+    $alarm_class= "green_color";
+} else {
     $alarm_class= ""; 
 }
 
@@ -232,7 +234,7 @@ echo <<<HTML
 
 HTML;
 
-    if ($quantity > $value_in_wb_bd ) {
+    if (($quantity > $value_in_wb_bd ) or ($value_in_wb_bd == 0) or ($quantity == $value_in_wb_bd)) {
         echo "<td><input type=\"checkbox\" name=\"_check_$article\" value=\"0\"></td>";
     } else {
         echo "<td><input checked type=\"checkbox\" name=\"_check_$article\" value=\"1\"></td>";

@@ -13,7 +13,7 @@ while ($stop <> 1 ) {
 
     $temp_zero_cell = $sheet->getCellByColumnAndRow(0,$i)->getValue(); // артикул 
     // echo "temp_zero_cell = $temp_zero_cell<br>";
-    $temp_name = $sheet->getCellByColumnAndRow(3,$i)->getValue(); // название 
+    $temp_name = $sheet->getCellByColumnAndRow(2,$i)->getValue(); // название 
     // echo "temp_name = $temp_name<br>";
     $temp_qty = $sheet->getCellByColumnAndRow(10,$i)->getValue(); // количество
     // echo "temp_qty = $temp_qty<br>";

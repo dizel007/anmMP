@@ -219,14 +219,20 @@ $price_for_shtuka = @$temp[$key]/@$arr_count[$key];
 } else {
     $price_for_shtuka = 0;
 }
+///     Цена за штуку
 echo "<td>".number_format($price_for_shtuka,2, ',', ' ')."</td>"; // цена за штукту
 
+///     себестоимость
 echo"<td class=\"plus\">"."$sebes_str_item"."</td>"; // себестоимость
 $temp_delta = ($price_for_shtuka - $sebes_str_item);
 
+///     Разница в стоимости
 echo"<td class=\"plus\">".number_format($temp_delta,2, ',', ' ')."</td>"; // дельта
 $our_pribil  = $temp_delta * @$arr_count[$key];
-$sum_our_pribil = @$sum_our_pribil + $our_pribil;
+
+$sum_our_pribil = @$sum_our_pribil + $our_pribil; // Наша заработок по всем артикулам
+
+///     Заработок с артикула 
 echo"<td class=\"our_many\"><b>".number_format($our_pribil,2, ',', ' ')."</b></td>"; // заработали на артикуле
   echo "</tr>";
 

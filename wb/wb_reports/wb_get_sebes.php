@@ -13,6 +13,9 @@ function get_sebestiomost_wb () {
         array('article' =>'ANM.49*99', 'sebestoimost' =>2500 , 'sku' =>'500199266' ),
         
         array('article' =>'7262-КП', 'sebestoimost' =>500 , 'sku' =>'985937305' ),
+        array('article' =>'7262-КП(Л)', 'sebestoimost' =>500 , 'sku' =>'985937305' ),
+        array('article' =>'7262-КП(У)', 'sebestoimost' =>500 , 'sku' =>'985937305' ),
+        array('article' =>'7262-КП(Ле)', 'sebestoimost' =>500 , 'sku' =>'985937305' ),
     
         array('article' =>'82400-Ч', 'sebestoimost' =>250 , 'sku' =>'233035518' ),
         array('article' =>'82401-Ч', 'sebestoimost' =>280 , 'sku' =>'232956901' ),

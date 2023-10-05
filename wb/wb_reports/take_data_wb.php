@@ -66,6 +66,73 @@ $arr_result = light_query_without_data($token_wb_stat, $link_wb);
 // echo "<pre>";
 // print_r($arr_result);
 
+require_once '../../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
+
+$xls = new PHPExcel();
+$xls->setActiveSheetIndex(0);
+$sheet = $xls->getActiveSheet();
+
+$sheet->setCellValue("D"."1", "Сумма продаж (возвратов)");
+$sheet->setCellValue("F"."1", "Количество доставок");
+$sheet->setCellValue("G"."1", "КОммисия без НДС");
+$sheet->setCellValue("H"."1", "К перечислению продавцу за реализованный товар");
+$sheet->setCellValue("I"."1", "Возмещение за выдачу и возврат товаров на ПВЗ");
+$sheet->setCellValue("J"."1", "Возмещение издержек по эквайрингу");
+$sheet->setCellValue("K"."1", "Вознаграждение WB без НДС");
+$sheet->setCellValue("L"."1", "НДС с вознаграждения WB");
+$sheet->setCellValue("M"."1", "Доплаты");
+$sheet->setCellValue("N"."1", "Штрафы");
+$sheet->setCellValue("O"."1", "Возмещение издержек по перевозке.");
+$sheet->setCellValue("P"."1", "Стоимость логистики");
+
+
+
+
+$next_i = 2;
+    foreach ($arr_result  as $q_items) {
+         if (isset($q_items['realizationreport_id'])) {$sheet->setCellValue("A".$next_i, $q_items['realizationreport_id']);}
+         if (isset($q_items['sa_name'])) { $sheet->setCellValue("B".$next_i, $q_items['sa_name']);}
+         if (isset($q_items['supplier_oper_name'])) { $sheet->setCellValue("C".$next_i, $q_items['supplier_oper_name']);}
+         if (isset($q_items['retail_amount'])) { $sheet->setCellValue("D".$next_i, $q_items['retail_amount']);}
+         if (isset($q_items['commission_percent'])) { $sheet->setCellValue("E".$next_i, $q_items['commission_percent']);}
+         if (isset($q_items['delivery_amount'])) { $sheet->setCellValue("F".$next_i, $q_items['delivery_amount']);}
+         if (isset($q_items['ppvz_sales_commission'])) { $sheet->setCellValue("G".$next_i, $q_items['ppvz_sales_commission']);}
+         if (isset($q_items['ppvz_for_pay'])) { $sheet->setCellValue("H".$next_i, $q_items['ppvz_for_pay']);}
+         if (isset($q_items['ppvz_reward'])) { $sheet->setCellValue("I".$next_i, $q_items['ppvz_reward']);}
+         if (isset($q_items['acquiring_fee'])) { $sheet->setCellValue("J".$next_i, $q_items['acquiring_fee']);}
+         if (isset($q_items['ppvz_vw'])) { $sheet->setCellValue("K".$next_i, $q_items['ppvz_vw']);}
+         if (isset($q_items['ppvz_vw_nds'])) { $sheet->setCellValue("L".$next_i, $q_items['ppvz_vw_nds']);}
+         if (isset($q_items['additional_payment'])) { $sheet->setCellValue("M".$next_i, $q_items['additional_payment']);}
+
+         if (isset($q_items['penalty'])) { $sheet->setCellValue("N".$next_i, $q_items['penalty']);}
+         if (isset($q_items['rebill_logistic_cost'])) { $sheet->setCellValue("O".$next_i, $q_items['rebill_logistic_cost']);}
+         if (isset($q_items['delivery_rub'])) { $sheet->setCellValue("P".$next_i, $q_items['delivery_rub']);}
+
+    
+         
+         $next_i++; // смешение по строкам
+     
+        } 
+ 
+     $objWriter = new PHPExcel_Writer_Excel2007($xls);
+     $num_report = $q_items['realizationreport_id'];
+     $file_name_1c_list_q = "WB_".$num_report."(".date('Y-m-d').").xlsx";
+     $objWriter->save('reports/'.$file_name_1c_list_q);  
+   
+  
+
+
+
+
+
+
+
+
+
+
+
+
+// die();
 /*******************************************************************************************
 *   Запускаем проверки (ЕСТЬ ЛИ МАССИВ)
 ******************************************************************************************/
@@ -102,7 +169,7 @@ $sum_nasha_viplata = 0;
 foreach ($arr_result as $item) {
 
     // Сумма к перечислению************************************************************************************************************
-    if ($item['supplier_oper_name'] == 'Продажа') {
+    if (($item['supplier_oper_name'] == 'Продажа') OR ($item['supplier_oper_name'] == 'Сторно продаж')) {
         $arr_sum_k_pererchisleniu[$item['sa_name']] = @$arr_sum_k_pererchisleniu[$item['sa_name']] + $item['ppvz_for_pay'];
         $sum_k_pererchisleniu = $sum_k_pererchisleniu  + $item['ppvz_for_pay'];
         $arr_count[$item['sa_name']] = @$arr_count[$item['sa_name']] + 1;
@@ -133,6 +200,14 @@ foreach ($arr_result as $item) {
         $arr_sum_logistik[$item['sa_name']] = @$arr_sum_logistik[$item['sa_name']] + $item['delivery_rub'];
         $sum_logistiki = $sum_logistiki  + $item['delivery_rub'];
     }
+    
+    if ($item['supplier_oper_name'] == 'Логистика сторно') {
+        $arr_sum_logistik[$item['sa_name']] = @$arr_sum_logistik[$item['sa_name']] - $item['delivery_rub'];
+        $sum_logistiki = $sum_logistiki  - $item['delivery_rub'];
+    }
+    
+
+
 
     // Сумма ШТРАФОв   ************************************************************************************************************
     if ($item['supplier_oper_name'] == 'Штрафы') {
@@ -204,7 +279,7 @@ echo "<td class=\"plus\">".number_format(@$arr_sum_avance[$key],2, ',', ' ')."</
 echo "<td class=\"plus\">".number_format(@$arr_sum_brak[$key],2, ',', ' ')."</td>"; 
 
 ///     Сумма выплат с возвратов 
-echo "<td class=\"minus\">".number_format(@$arr_sum_vozvratov[$key],2, ',', ' ')."</td>";
+echo "<td class=\"plus\">".number_format(@$arr_sum_vozvratov[$key],2, ',', ' ')."</td>";
 
 ///     Сумма ЛОгистики 
  echo "<td class=\"minus\">".number_format(@$arr_sum_logistik[$key],2, ',', ' ')."</td>";
@@ -219,7 +294,7 @@ echo "<td class=\"minus\">".number_format(@$arr_sum_shtraf[$key],2, ',', ' ')."<
 
 
 ///     Сумма к выплате
-$temp[$key] =  @$arr_sum_k_pererchisleniu[$key] - @$arr_sum_vozvratov[$key] + @$arr_sum_avance[$key] +  
+$temp[$key] =  @$arr_sum_k_pererchisleniu[$key] + @$arr_sum_vozvratov[$key] + @$arr_sum_avance[$key] +  
 @$arr_sum_brak[$key] - @$arr_sum_logistik[$key] - @$arr_sum_shtraf[$key];
 $sum_nasha_viplata = $sum_nasha_viplata + $temp[$key];
 
@@ -254,7 +329,7 @@ echo"<td></td>";
 echo"<td class=\"plus\"><b>".number_format($sum_k_pererchisleniu,2, ',', ' ')."</b></td>";
 echo"<td class=\"plus\"><b>".number_format($sum_avance,2, ',', ' ')."</b></td>";
 echo"<td class=\"plus\"><b>".number_format($sum_brak,2, ',', ' ')."</b></td>";
-echo"<td class=\"minus\"><b>".number_format($sum_vozvratov,2, ',', ' ')."</b></td>";
+echo"<td class=\"plus\"><b>".number_format($sum_vozvratov,2, ',', ' ')."</b></td>";
 echo"<td class=\"minus\"><b>".number_format($sum_logistiki,2, ',', ' ')."</b></td>";
 echo"<td class=\"minus\"><b>".number_format($sum_voznagrazhdenie_wb,2, ',', ' ')."</b></td>";
 echo"<td class=\"minus\"><b>".number_format($sum_shtraf,2, ',', ' ')."</b></td>";

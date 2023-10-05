@@ -34,13 +34,14 @@ echo <<<HTML
 <td class="main_screen"></td>
 <td class="main_screen"></td>
 </tr>
+
 <tr>
 <td class="main_screen"><h1>Отчеты</h1></td>
 <td class="main_screen"><a href="wb/wb_reports/take_data_wb.php"><img src="pics/wb_reports.jpg"></a></td>
 <td class="main_screen"><a href="ozon/ozon_report/ozon_get_trans.php"><img src="pics/ozon_reports.jpg"></td>
 <td class="main_screen"></td>
 <td class="main_screen"></td>
-</tr>
+</tr> 
 </table>
 
 HTML;

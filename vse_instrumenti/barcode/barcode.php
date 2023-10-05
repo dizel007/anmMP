@@ -16,7 +16,7 @@ $encode="EAN-13";
 	
 	$bar->setSymblogy($encode);
 	$bar->setHeight($height);
-	//$bar->setFont("arial");
+	// $bar->setFont("arial");
 	$bar->setScale($scale);
 	$bar->setHexColor($color,$bgcolor);
 

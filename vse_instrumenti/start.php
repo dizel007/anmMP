@@ -1,4 +1,11 @@
 <?php
+require_once "parce_xlsx_price.php";
+$arr_catalog = get_catalog_VI();
+
+
+
+// echo "<pre>";
+// print_r($arr_catalog);
 
 if (isset($_FILES['file'])) {
     $xml_file =$_FILES['file']['name'];
@@ -34,55 +41,35 @@ if (!isset($array['ORDER']['DocumentNumber'])) {
     die('Не смогли распарсить XML file');
 }
 
-echo $DocNumber = $array['ORDER']['DocumentNumber'];
+$DocNumber = $array['ORDER']['DocumentNumber'];
+echo "<b>НОМЕР ЗАКАЗА :". $DocNumber."</b>" ;
+// создаем папку с заказом
 $temp_dir = 'reports/'.$DocNumber;
 if (!is_dir($temp_dir)) {
 	mkdir($temp_dir, 0777, True);
 }
 
-echo "<br>";
 echo "<pre>";
 // print_r($array['ORDER']['OrderDetail']);
 
-$files = scandir('pics_shtrih', SCANDIR_SORT_ASCENDING); // получаем список всех файлов со штрихкодами
-$count_item = 0;
-foreach ($array['ORDER']['OrderDetail'] as &$items) {
-    $priznak_find_file = 0;
-    foreach ($files as $file) {
-        $file_temp = "zzz".$file;
-        if (strpos($file_temp, $items['EAN'])) {
-            $items['filename'] = $file;
-            $new_arr_items[]=$items;
-            $priznak_find_file = 1;
-            
-        }
-    }
-    $count_item ++;
 
-    if ($priznak_find_file !=1 ) {
-        $strih = $items['SenderPrdCode'];
-        echo "<br><h2><b>Не нашли штрихкод  для артикула [$strih] </b></h2><br>"; 
-    }
-}
+// перебираем массив из ВИ
+foreach ($array['ORDER']['OrderDetail'] as &$item) {
 
-if ($count_item != count($new_arr_items)) {
-    echo "<br> Не все ШТРИХ кода нашли" ;
-} else {
-    echo "<br> все ШТРИХ на месте !!!" ;
-}
-
-print_r($new_arr_items);
-
-
-foreach ($new_arr_items as $item) {
+    $item['price'] = get_price_for_1C ($arr_catalog, $item['SenderPrdCode']);
     $barnumber=$item['EAN'];
     $file=$item['SenderPrdCode'];
-
-	require("barcode/barcode.php");
+    	require("barcode/barcode.php");
     $file_name = $file.".png";
    $arr_file_names[] = get_shtrih_code ($item , $DocNumber, $file_name);
     unlink($file_name);
+
 }
+
+print_r($array['ORDER']['OrderDetail']);
+//// Формируем файл для 1С
+$file_name_1c_list = make_1c_file ($array['ORDER']['OrderDetail'], $temp_dir.'/');
+
 $zip = new ZipArchive();
 $archive_path = $temp_dir. '/'."$DocNumber.zip";
 $zip->open($archive_path , ZipArchive::CREATE|ZipArchive::OVERWRITE);
@@ -90,6 +77,7 @@ $zip->open($archive_path , ZipArchive::CREATE|ZipArchive::OVERWRITE);
     foreach ($arr_file_names as $arc) {
         $zip->addFile($temp_dir."/".$arc ,  $arc);
     }
+    $zip->addFile($temp_dir."/".$file_name_1c_list ,  $file_name_1c_list); // пакуем файл для 1С
 $zip->close();
 // print_r($arr_file_names);
 
@@ -120,17 +108,13 @@ for ($i=1; $i <= $array_items['QTY']; $i++) {
 //add new page
 $pdf->AliasNbPages();
 $pdf->AddPage();
-// $file = "pics_shtrih/".$array_items['filename']; // название пнг файлв с кьюР кодом
-// $filedata = base64_decode($qr_supply['file']);
-//     file_put_contents($file, $filedata, FILE_APPEND);
-
 $pdf->image($file ,2,2,'PNG');
+
 // unlink ($file); // удаляем png файл
 
-
-$article = $array_items['SenderPrdCode'];
 $pdf->SetFont('TimesNRCyrMT','', 24); // устанавливаем шрифт для артикула
 
+$article = "арт.(".$array_items['SenderPrdCode'].")";
 $article_rus = MakeUtf8Font($article);
 $pdf->text(10,75 ,$article_rus); // припечатываем артикул к ПДФ
 
@@ -158,3 +142,41 @@ function MakeUtf8Font($string) {
   }
 
 
+/****************************************************************************************************************
+*******************      Функция перекодировки текста чтобы в ПДФ были русские буквы ******************************
+****************************************************************************************************************/
+function get_price_for_1C ($arr_catalog, $article) {
+    foreach ($arr_catalog as $catalog_item) {
+        // echo "<br>7777".$article."*****".$catalog_item['article']."77777<br>";
+        if((string)$article == (string)$catalog_item['article']) {
+        // echo "<br>".$article."*****".$catalog_item['article']."<br>";
+            return $catalog_item['price'];
+        }
+  }
+  return 0;
+}
+
+
+function make_1c_file ($arr_for_1C, $new_path){
+
+    $xls = new PHPExcel();
+    $xls->setActiveSheetIndex(0);
+    $sheet = $xls->getActiveSheet();
+    $next_i = 1;
+    foreach ($arr_for_1C  as $q_items) {
+         $sheet->setCellValue("A".$next_i, $q_items['SenderPrdCode']);
+         $sheet->setCellValue("C".$next_i, $q_items['QTY']);
+         $sheet->setCellValue("D".$next_i, $q_items['price']); // цена за 1 шт товара
+
+         $next_i++; // смешение по строкам
+     
+    }
+       
+
+     $objWriter = new PHPExcel_Writer_Excel2007($xls);
+     $rnd1000001 = "(".rand(0,10000).")";
+     $file_name_1c_list_q = "VI_Zakaz_v_1c_".date('Y-m-d').$rnd1000001."_(NEW_funck).xlsx";
+     $objWriter->save($new_path."/".$file_name_1c_list_q);  
+     return $file_name_1c_list_q;
+    
+    }

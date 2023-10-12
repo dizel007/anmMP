@@ -5,17 +5,43 @@ function  Parce_excel_1c_sklad ($xls) {
 // $xls = PHPExcel_IOFactory::load('temp_sklad/temp.xlsx');
 $xls->setActiveSheetIndex(0);
 $sheet = $xls->getActiveSheet();
+
+ // ищем строу где есть в первом столбце колонка артикул
+for ($j=0; $j<15;$j++) {
+ $column_artikle = $sheet->getCellByColumnAndRow(0,$j)->getValue(); // артикул
+ if ($column_artikle == 'Артикул' ){
+        break;
+ }
+}
+$name_string = $j;
+// ищем столбцы с нужными названиями 
+
+$nomenklatura = 3; // значения по умолчания
+$quantity = 10; // значения по умолчания
+
+for ($j=0; $j<30;$j++) {
+    $poisk_perem = $sheet->getCellByColumnAndRow($j,$name_string)->getValue(); // артикул
+    if ($poisk_perem == 'Номенклатура' ){
+        $nomenklatura = $j;
+        echo "Нашли столбец с номенклатурой - ".$nomenklatura."<br>";
+      }
+    if ($poisk_perem == 'Доступно' ){
+           $quantity = $j;
+           echo "Нашли столбец с досступным количеством - ".$quantity."<br>";
+        }
+
+   }
+ 
+
 $i=14;
 $stop =0;
-
-
 while ($stop <> 1 ) {
 
     $temp_zero_cell = $sheet->getCellByColumnAndRow(0,$i)->getValue(); // артикул 
     // echo "temp_zero_cell = $temp_zero_cell<br>";
-    $temp_name = $sheet->getCellByColumnAndRow(2,$i)->getValue(); // название 
+    $temp_name = $sheet->getCellByColumnAndRow($nomenklatura,$i)->getValue(); // название 
     // echo "temp_name = $temp_name<br>";
-    $temp_qty = $sheet->getCellByColumnAndRow(10,$i)->getValue(); // количество
+    $temp_qty = $sheet->getCellByColumnAndRow($quantity,$i)->getValue(); // количество
     // echo "temp_qty = $temp_qty<br>";
 
     if (($temp_zero_cell <>'') and ($temp_name <> '')) {
@@ -23,6 +49,7 @@ while ($stop <> 1 ) {
 
         // echo "MEW = $real_article, QTY=$temp_qty<br>";
     }
+    // echo "real_article = $real_article<br>";
 if ($temp_qty=='#NULL!') {
     $temp_qty=0;
 }

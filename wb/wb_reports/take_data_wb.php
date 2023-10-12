@@ -39,8 +39,37 @@ echo <<<HTML
 <form action="" method="get">
 <label>Магазин</label>
 <select required name="wb">
+HTML;
+if (isset($_GET['wb'])){
+    if ($_GET['wb'] == 1) {
+echo <<<HTML
+        <option selected value = "1">WB ООО</option>
+        <option value = "2">WB ИП</option>
+HTML;
+    }
+    /// для ИП
+    elseif ($_GET['wb'] == 2) {
+echo <<<HTML
+        <option value = "1">WB ООО</option>
+        <option selected value = "2">WB ИП</option>
+HTML;
+    } else {
+echo <<<HTML
+            <option value = "1">WB ООО</option>
+            <option  value = "2">WB ИП</option>
+HTML;    
+        }
+
+} else {
+echo <<<HTML
     <option value = "1">WB ООО</option>
-    <option value = "2">WB ИП</option>
+    <option  value = "2">WB ИП</option>
+HTML;    
+}
+
+
+echo <<<HTML
+
 </select>
 
 
@@ -63,10 +92,45 @@ $link_wb = "https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailBy
 
 $arr_result = light_query_without_data($token_wb_stat, $link_wb);
 
+/*
+Проверяем нет ли ошибки взаимодействия
+*/
+if (isset($arr_result['code'])) {
+    if ($arr_result['code'] == 429) {
+    echo "<br>".$arr_result['message']."<br>";
+    die ('');
+    }
+} 
+
+/*
+Проверяем нет ли ошибки по возварту данных
+*/
+if (isset($arr_result['errors'][0])) {
+    echo "<br>".$arr_result['errors'][0]."<br>";
+    die ('WB не вернул данные');
+    } 
+
+/*
+Проверяем eсть ли вообще массив 
+*/
+if (!isset($arr_result)) {
+    echo "<br>Нет массива для вывода<br>";
+    die ('WB не вернул данные');
+    } 
+
+/*
+
+/*
+Выводим наш массив 
+*/    
+echo "<br>************************************************************************************<br>";
 // echo "<pre>";
 // print_r($arr_result);
+echo "<br>************************************************************************************<br>";
 
 require_once '../../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
+
+
 
 $xls = new PHPExcel();
 $xls->setActiveSheetIndex(0);
@@ -169,11 +233,21 @@ $sum_nasha_viplata = 0;
 foreach ($arr_result as $item) {
 
     // Сумма к перечислению************************************************************************************************************
-    if (($item['supplier_oper_name'] == 'Продажа') OR ($item['supplier_oper_name'] == 'Сторно продаж')) {
+    
+    if (($item['supplier_oper_name'] == 'Продажа') ) {
+
         $arr_sum_k_pererchisleniu[$item['sa_name']] = @$arr_sum_k_pererchisleniu[$item['sa_name']] + $item['ppvz_for_pay'];
         $sum_k_pererchisleniu = $sum_k_pererchisleniu  + $item['ppvz_for_pay'];
         $arr_count[$item['sa_name']] = @$arr_count[$item['sa_name']] + 1;
     }
+// Сторно продаж ************************************************************************************************************
+    if (($item['supplier_oper_name'] == 'Сторно продаж') ) {
+
+        $arr_sum_k_pererchisleniu[$item['sa_name']] = @$arr_sum_k_pererchisleniu[$item['sa_name']] - $item['ppvz_for_pay'];
+        $sum_k_pererchisleniu = $sum_k_pererchisleniu  - $item['ppvz_for_pay'];
+        $arr_count[$item['sa_name']] = @$arr_count[$item['sa_name']] - 1;
+    }
+
  
     // Сумма возвоатов ************************************************************************************************************
     if ($item['supplier_oper_name'] == 'Возврат') {
@@ -294,7 +368,7 @@ echo "<td class=\"minus\">".number_format(@$arr_sum_shtraf[$key],2, ',', ' ')."<
 
 
 ///     Сумма к выплате
-$temp[$key] =  @$arr_sum_k_pererchisleniu[$key] + @$arr_sum_vozvratov[$key] + @$arr_sum_avance[$key] +  
+$temp[$key] =  @$arr_sum_k_pererchisleniu[$key] - @$arr_sum_vozvratov[$key] + @$arr_sum_avance[$key] +  
 @$arr_sum_brak[$key] - @$arr_sum_logistik[$key] - @$arr_sum_shtraf[$key];
 $sum_nasha_viplata = $sum_nasha_viplata + $temp[$key];
 

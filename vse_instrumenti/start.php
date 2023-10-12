@@ -97,7 +97,7 @@ die('РАЗОБРАЛИ');
 *******************      Функция формирования штрихкодов  ******************************
 ****************************************************************************************************************/
 function get_shtrih_code ($array_items, $DocNumber, $file) {
-require_once "libs/fpdf/fpdf.php";
+require_once "../libs/fpdf/fpdf.php";
 //create pdf object
 // $pdf = new FPDF('L','mm', array(121, 107));
 $pdf = new FPDF('L','mm', array(120, 80));

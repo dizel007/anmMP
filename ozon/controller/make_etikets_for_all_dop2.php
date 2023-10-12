@@ -13,10 +13,13 @@ if (isset($_GET['date_query_ozon'])) {
 
 
     $new_path = '../reports/'.$date_query_ozon."/";
+    make_new_dir_z($new_path,0); // создаем папку с датой
     $path_etiketki = $new_path.'etiketki';
+    make_new_dir_z($path_etiketki,0); // создаем папку с датой
     $path_excel_docs = $new_path.'excel_docs';
+    make_new_dir_z($path_excel_docs,0); // создаем папку с датой
     $path_zip_archives = $new_path.'zip_archives';
-    
+    make_new_dir_z($path_zip_archives,0); // создаем папку с датой
 
     echo  $date_query_ozon;
 } 

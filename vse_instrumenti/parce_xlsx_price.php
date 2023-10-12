@@ -1,7 +1,7 @@
 <?php
 
 function get_catalog_VI() {
-require_once 'libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
+require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
  
 // Файл xlsx
 $xls = PHPExcel_IOFactory::load(__DIR__ . '/price/price_VI.xlsx');

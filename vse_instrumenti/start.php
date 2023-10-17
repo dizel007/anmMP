@@ -103,21 +103,28 @@ require_once "../libs/fpdf/fpdf.php";
 $pdf = new FPDF('L','mm', array(120, 80));
 
 $pdf->AddFont('TimesNRCyrMT','','timesnrcyrmt.php');// добавляем шрифт ариал
+$pdf->AddFont('TimesNRCyrMT_bold','','timesnrcyrmt_bold.php');// добавляем шрифт ариал
 
 for ($i=1; $i <= $array_items['QTY']; $i++) {
 //add new page
 $pdf->AliasNbPages();
 $pdf->AddPage();
 $pdf->image($file ,2,2,'PNG');
-
 // unlink ($file); // удаляем png файл
-
 $pdf->SetFont('TimesNRCyrMT','', 24); // устанавливаем шрифт для артикула
 
 $article = "арт.(".$array_items['SenderPrdCode'].")";
 $article_rus = MakeUtf8Font($article);
 $pdf->text(10,75 ,$article_rus); // припечатываем артикул к ПДФ
 
+$first_ = substr($array_items['EAN'], 0, 1);
+$secont_ = substr($array_items['EAN'], 1,6 );
+$third_ = substr($array_items['EAN'], 7,11);
+
+$pdf->SetFont('TimesNRCyrMT_bold','', 24); // устанавливаем шрифт для артикула
+$pdf->text(5, 60 ,$first_ ); // припечатываем артикул к ПДФ
+$pdf->text(22, 63 ,$secont_ ); // припечатываем артикул к ПДФ
+$pdf->text(73, 63 ,$third_ ); // припечатываем артикул к ПДФ
 
 // break; /************************************************************************************************************************/
 }

@@ -54,34 +54,12 @@
 		
 		    // $this->_font=dirname($_SERVER["PATH_TRANSLATED"])."/"."arialbd.ttf";
 
-
-
-			// if (isset($_SERVER['WINDIR']) && file_exists($_SERVER['WINDIR']))
-			// $this->_font='C:/xampp/htdocs/anmarkets/vse_instrumenti/Fonts/arialbd.ttf';
-
-			// $path_good = "C:/xampp/htdocs/anmarkets/vse_instrumenti/Fonts/";
-			// echo "999--".$path_good;
-			// echo "<br>";
-			$path = realpath('fonts/')."/";
-			echo "***--".$path;
-			echo "<br>";
 			
-
-			// $path = str_replace("/", "\\", $path);
-			// echo "5555--".$path;
-			// echo "<br>";
-			print_r(gd_info());
+			// $path = realpath('fonts/')."/";
+			// $path= "https://anmarkets.ru/vse_instrumenti/fonts/";
+			// $path= "https://anmarkets.ru/vse_instrumenti/fonts/";
 			// Установка переменной окружения для GD
-		// putenv('GDFONTPATH=' . realpath('.'));
-
-		// Имя шрифта для использования (обратите внимание, что расширение .ttf не указывается)
-		// $font = 'arialbd';
-
-			// echo $this->_font='arialbd';
-			echo "<br>";
-
-
-			$this->_font=$path.'arialbd.ttf';
+			$this->_font='arialbd.ttf';
 
 
 			$this->setSymblogy($encoding);
@@ -186,8 +164,7 @@
 			
 		}
 		}	
-		/// Start function for code93
-		
+	
 			
 		///Start Functions from EAN-13 Encoding
 
@@ -336,34 +313,34 @@
 			}
 			
 		
-			if($this->_encode=="UPC-A")
-				$str=substr($barnumber,1,1);
-			else
-				$str=substr($barnumber,0,1);
+			// if($this->_encode=="UPC-A")
+			// 	$str=substr($barnumber,1,1);
+			// else
+			// 	$str=substr($barnumber,0,1);
 
-			@imagettftext($im,$scale*6,0, $space['left'], $height, $bar_color,$this->_font , $str);
+			// @imagettftext($im,$scale*6,0, $space['left'], $height, $bar_color,$this->_font , $str);
 
-			if($this->_encode=="UPC-A")
-				$str=substr($barnumber,2,5);
-			else
-				$str=substr($barnumber,1,6);
+			// if($this->_encode=="UPC-A")
+			// 	$str=substr($barnumber,2,5);
+			// else
+			// 	$str=substr($barnumber,1,6);
 			
-			$x= $space['left']+$scale*strlen($barnumber)+$scale*6;	
-			@imagettftext($im,$scale*6,0,$x, $height2, $bar_color,$this->_font , $str);
+			// $x= $space['left']+$scale*strlen($barnumber)+$scale*6;	
+			// @imagettftext($im,$scale*6,0,$x, $height2, $bar_color,$this->_font , $str);
 			
-			if($this->_encode=="UPC-A")
-				$str=substr($barnumber,7,5);
-			else
-				$str=substr($barnumber,7,6);
-			$x=$space['left']+$scale*strlen($bars)/1.65+$scale*6;
-			@imagettftext($im,$scale*6,0, $x, $height2, $bar_color,$this->_font ,$str);
+			// if($this->_encode=="UPC-A")
+			// 	$str=substr($barnumber,7,5);
+			// else
+			// 	$str=substr($barnumber,7,6);
+			// $x=$space['left']+$scale*strlen($bars)/1.65+$scale*6;
+			// @imagettftext($im,$scale*6,0, $x, $height2, $bar_color,$this->_font ,$str);
 
-			if($this->_encode=="UPC-A")
-			{
-				$str=substr($barnumber,12,1);
-				$x=$total_x-$space['left']-$scale*6;
-				@imagettftext($im,$scale*6,0, $x, $height, $bar_color,$this->_font , $str);
-			}
+			// if($this->_encode=="UPC-A")
+			// {
+			// 	$str=substr($barnumber,12,1);
+			// 	$x=$total_x-$space['left']-$scale*6;
+			// 	@imagettftext($im,$scale*6,0, $x, $height, $bar_color,$this->_font , $str);
+			// }
 			
 			if($this->_format=="png")
 			{

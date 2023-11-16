@@ -23,6 +23,10 @@ foreach ($res['result']['postings'] as $items) {
 // Получаем количество товара из 1С 
 $arr_sklad = json_decode(file_get_contents('uploads/array_items.json'),true);
 
+// echo "<pre>";
+// print_r($arr_sklad);
+
+// die('fffffffffffffffffff');
 // Получаем наш каталог (все товары)
 $arr_catalog = get_catalog_ozon ();
 

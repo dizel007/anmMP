@@ -22,7 +22,7 @@ echo <<<HTML
 <tr>
     <td class="main_screen"><h1>Доп инфо</h1></td>
     <td class="main_screen"></td>
-    <td class="main_screen"><a href="ozon/ozon_get_stikers.php"><img src="pics/ozov_sklad.jpg"></a></td>
+    <td class="main_screen"><a href="ozon/ozon_get_stikers.php"><img src="pics/ozon_sklad.jpg"></a></td>
     <td class="main_screen"></td>
     <td class="main_screen"></td>
 </tr>

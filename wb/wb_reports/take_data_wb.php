@@ -353,7 +353,7 @@ echo "<td class=\"plus\">".number_format(@$arr_sum_avance[$key],2, ',', ' ')."</
 echo "<td class=\"plus\">".number_format(@$arr_sum_brak[$key],2, ',', ' ')."</td>"; 
 
 ///     Сумма выплат с возвратов 
-echo "<td class=\"plus\">".number_format(@$arr_sum_vozvratov[$key],2, ',', ' ')."</td>";
+echo "<td class=\"minus\">".number_format(@$arr_sum_vozvratov[$key],2, ',', ' ')."</td>";
 
 ///     Сумма ЛОгистики 
  echo "<td class=\"minus\">".number_format(@$arr_sum_logistik[$key],2, ',', ' ')."</td>";
@@ -403,7 +403,7 @@ echo"<td></td>";
 echo"<td class=\"plus\"><b>".number_format($sum_k_pererchisleniu,2, ',', ' ')."</b></td>";
 echo"<td class=\"plus\"><b>".number_format($sum_avance,2, ',', ' ')."</b></td>";
 echo"<td class=\"plus\"><b>".number_format($sum_brak,2, ',', ' ')."</b></td>";
-echo"<td class=\"plus\"><b>".number_format($sum_vozvratov,2, ',', ' ')."</b></td>";
+echo"<td class=\"minus\"><b>".number_format($sum_vozvratov,2, ',', ' ')."</b></td>";
 echo"<td class=\"minus\"><b>".number_format($sum_logistiki,2, ',', ' ')."</b></td>";
 echo"<td class=\"minus\"><b>".number_format($sum_voznagrazhdenie_wb,2, ',', ' ')."</b></td>";
 echo"<td class=\"minus\"><b>".number_format($sum_shtraf,2, ',', ' ')."</b></td>";

@@ -9,14 +9,14 @@ require_once '../libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
 
 echo <<<HTML
 
-<img src="../pics/ozov_sklad.jpg">
+<img src="../pics/ozon_sklad.jpg">
 
 HTML;
 
 if (isset($_GET['date_query_ozon'])) {
     $date_query_ozon = $_GET['date_query_ozon'];  
  }else {
-    $date_query_ozon =''; 
+    $date_query_ozon = date('Y-m-d'); 
 }
 
 echo <<<HTML

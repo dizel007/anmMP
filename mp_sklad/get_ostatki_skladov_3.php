@@ -71,6 +71,10 @@ foreach ($arr_catalog as $items) {
     $arr_skus[] = $items['barcode'];
 }
 
+// echo "<pre>";
+
+// print_r($arr_skus);
+
 
 $link_wb  = "https://suppliers-api.wildberries.ru/api/v3/stocks/".$warehouseId;
 $data = array("skus"=> $arr_skus);
@@ -102,7 +106,6 @@ $res = json_decode($res, true);
 // echo "<pre>";
 // print_r($res);
 //******************************************************************************************* */
-
 foreach ($res['stocks'] as $prods)  {
     foreach ($arr_catalog as &$items) {
         if ($prods['sku'] == $items['barcode']) {
@@ -181,7 +184,8 @@ HTML;
 unset ($items); // чистим эту переменную
 
 foreach ($arr_catalog as $items) {
-   
+
+
     $article = $items['real_article'];
     $name = $items['name'];
     $quantity = $items['quantity'];

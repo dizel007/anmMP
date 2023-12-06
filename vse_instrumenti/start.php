@@ -171,7 +171,8 @@ function make_1c_file ($arr_for_1C, $new_path){
     $sheet = $xls->getActiveSheet();
     $next_i = 1;
     foreach ($arr_for_1C  as $q_items) {
-         $sheet->setCellValue("A".$next_i, $q_items['SenderPrdCode']);
+         $new_article = change_article_for_1C($q_items['SenderPrdCode']); // подменяем артикул, чтобы бился с 1С артикулами
+         $sheet->setCellValue("A".$next_i, $new_article);
          $sheet->setCellValue("C".$next_i, $q_items['QTY']);
          $sheet->setCellValue("D".$next_i, $q_items['price']); // цена за 1 шт товара
 
@@ -187,3 +188,31 @@ function make_1c_file ($arr_for_1C, $new_path){
      return $file_name_1c_list_q;
     
     }
+
+function change_article_for_1C ($article) {
+if ($article == '301А' ) {
+    $new_article = '301';
+// большая решетка
+    } elseif ($article == '302А' ) {
+        $new_article = '302';
+// поддон с решеткой
+    } elseif ($article == 'AN.301.315' ) {
+        $new_article = 'ANM.301.315';
+// решетки водоотводные
+    } elseif ($article == 'ANM.503' ) {
+        $new_article = '503А';
+
+    } elseif ($article == 'ANM.508К.10' ) {
+        $new_article = '508АК-10';
+
+
+    } elseif ($article == 'ANM.503' ) {
+            $new_article = '503А';
+    } else {
+        $new_article = $article;
+    }
+
+
+    return $new_article;
+
+}

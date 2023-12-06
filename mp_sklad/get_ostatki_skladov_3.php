@@ -38,7 +38,7 @@ $arr_article_items =  Parce_excel_1c_sklad ($xls) ; // парсим Загруж
 
 // print_r($arr_article_items);
 
-
+// die();
 
 $market = $_POST['market'];
 //  присваиваем номер склада

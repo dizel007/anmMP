@@ -343,6 +343,8 @@ function output_print_comment($info_comment) {
     usleep(10000); // трата на времени на добавление на вывод данных на экран
 };
 
+
+
 // Функция создает директорию, если ее нет
 function make_new_dir_z($dir, $append) {
 
@@ -351,3 +353,9 @@ function make_new_dir_z($dir, $append) {
     } 
 
 }
+
+// Функция записи данных в файл логов
+
+
+
+

@@ -44,6 +44,7 @@ if (isset($_GET['file_name_list_podbora'])) {$file_name_list_podbora = $_GET['fi
     
   
 echo  $date_query_ozon;
+sleep(1);
 // Получаем списрк заказов готовых к отправлению (Берем только на выбранное число)
 $res = get_all_waiting_posts_for_need_date($token, $client_id, $date_query_ozon, "awaiting_deliver",0);
 

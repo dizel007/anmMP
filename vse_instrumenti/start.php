@@ -198,13 +198,17 @@ if ($article == '301А' ) {
 // поддон с решеткой
     } elseif ($article == 'AN.301.315' ) {
         $new_article = 'ANM.301.315';
+     }elseif ($article == '315А' ) {
+        $new_article = '315';
 // решетки водоотводные
     } elseif ($article == 'ANM.503' ) {
         $new_article = '503А';
 
     } elseif ($article == 'ANM.508К.10' ) {
         $new_article = '508АК-10';
-
+    
+    } elseif ($article == 'ANM.508К' ) {
+        $new_article = '508АК';
 
     } elseif ($article == 'ANM.503' ) {
             $new_article = '503А';

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ORDERS>
+	<ORDER DocID="155816177" SourceFile="orders_20231013080152_1271669.xml">
+		<BuyerGLN>4607977269995</BuyerGLN>
+		<SupplierGLN>4607191624679</SupplierGLN>
+		<DeliveryPointGLN>4607977269995</DeliveryPointGLN>
+		<SenderCode />
+		<ReceiverCode />
+		<Format>XML</Format>
+		<DocumentNumber>1271669</DocumentNumber>
+		<DocumentDate>20231013</DocumentDate>
+		<DeliveryDate>20231018</DeliveryDate>
+		<DeliveryTime>000000</DeliveryTime>
+		<Currency>RUB</Currency>
+		<Options>
+			<DocHeadOptions>
+				<DocOption>
+					<Name>ORDERS</Name>
+					<DocOption>
+						<Name>TYPE</Name>
+						<Value>2</Value>
+					</DocOption>
+				</DocOption>
+			</DocHeadOptions>
+		</Options>
+		<OrderDetail>
+			<EAN>4673728485075</EAN>
+			<SenderPrdCode>82401-Ч</SenderPrdCode>
+			<ReceiverPrdCode>82401-Ч</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр ANMAKS Кантри черный, длина 10000 мм, высота 110 мм, арт. 82401-Ч</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>4.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485686</EAN>
+			<SenderPrdCode>8910-30</SenderPrdCode>
+			<ReceiverPrdCode>8910-30</ReceiverPrdCode>
+			<ProductName>АНМАКС Крепящий анкер универсальный пластиковый, 30 штук, арт. 8910-30</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>3.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485594</EAN>
+			<SenderPrdCode>7260-К-12</SenderPrdCode>
+			<ReceiverPrdCode>7260-К-12</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр, Экобордюр Контур, длина 1000 мм, высота 60 мм, комплект - 12 штук, арт. 7260-К-12</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>3.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485624</EAN>
+			<SenderPrdCode>1940-10</SenderPrdCode>
+			<ReceiverPrdCode>1940-10</ReceiverPrdCode>
+			<ProductName>Анмакс Крепящий якорь к бордюру Кантри. Оцинкованная сталь. 10 штук, арт. 1940-10</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485006</EAN>
+			<SenderPrdCode>8210</SenderPrdCode>
+			<ReceiverPrdCode>8210</ReceiverPrdCode>
+			<ProductName>Анмакс Бордюр тротуарный ANMAKS пластиковый, длина 3000 мм, высота 45 мм, арт. 8210</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>5.0000</QTY>
+		</OrderDetail>
+	</ORDER>
+</ORDERS>

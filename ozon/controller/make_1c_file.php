@@ -135,6 +135,12 @@ $i=1;
 
 $sheet2->setCellValue("A".$i, "Первый заказ");
 $i++; // смешение по строкам
+
+
+
+
+
+
 foreach ($array_oben as $array_items) {
     $i2=$i-1;
     $sheet2->getStyle("A".$i2.":E".$i2 )->applyFromArray($bg); // фон

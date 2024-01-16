@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ORDERS>
+	<ORDER DocID="156417150" SourceFile="orders_20231103082157_1327177.xml">
+		<BuyerGLN>4607977269995</BuyerGLN>
+		<SupplierGLN>4607191624679</SupplierGLN>
+		<DeliveryPointGLN>4607977269995</DeliveryPointGLN>
+		<SenderCode />
+		<ReceiverCode />
+		<Format>XML</Format>
+		<DocumentNumber>1327177</DocumentNumber>
+		<DocumentDate>20231103</DocumentDate>
+		<DeliveryDate>20231108</DeliveryDate>
+		<DeliveryTime>000000</DeliveryTime>
+		<Currency>RUB</Currency>
+		<Options>
+			<DocHeadOptions>
+				<DocOption>
+					<Name>ORDERS</Name>
+					<DocOption>
+						<Name>TYPE</Name>
+						<Value>2</Value>
+					</DocOption>
+				</DocOption>
+			</DocHeadOptions>
+		</Options>
+		<OrderDetail>
+			<EAN>4673728485297</EAN>
+			<SenderPrdCode>302А</SenderPrdCode>
+			<ReceiverPrdCode>302А</ReceiverPrdCode>
+			<ProductName>АНМАКС Решетка грязезащитная ANMAKS 990x490x20 мм стальная ячеистая оцинкованная 302A</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>11.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485686</EAN>
+			<SenderPrdCode>8910-30</SenderPrdCode>
+			<ReceiverPrdCode>8910-30</ReceiverPrdCode>
+			<ProductName>АНМАКС Крепящий анкер универсальный пластиковый, 30 штук, арт. 8910-30</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>16.0000</QTY>
+		</OrderDetail>
+	</ORDER>
+</ORDERS>

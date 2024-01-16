@@ -12,11 +12,12 @@ function is_sunday($date) {
 
 /// для ООО
 if (isset($_GET['wb'])){
-if ($_GET['wb'] == 1) {
-require_once "functions/topen.php";
-    echo "<b>СТАТИСТИКА ДЛЯ ООО</b>";
-}
-/// для ИП
+    if ($_GET['wb'] == 1) {
+    // require_once "functions/topen.php";
+    require_once "../tokens/topen.php";
+
+        echo "<b>СТАТИСТИКА ДЛЯ ООО</b>";
+    }
 }   
 
 if (isset($_GET['UPD_number'])) {

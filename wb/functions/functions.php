@@ -21,9 +21,9 @@ function light_query_without_data($token_wb, $link_wb){
 	
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
 	curl_close($ch);
-	
+	if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
 		echo     '<br> Результат обмена (SELECT without Data): '.$http_code;
-		
+	}
 	$res = json_decode($res, true);
 	
 	return $res;
@@ -48,8 +48,11 @@ function light_query_with_data($token_wb, $link_wb, $data){
 	
 	$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-код
 	curl_close($ch);
+	
+	if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
 		echo     '<br>Результат обмена(SELECT with Data): '.$http_code. "<br>";
-
+	}
+	
 	$res = json_decode($res, true);
 	// var_dump($res); // выводит результирующий массив
 	return $res;
@@ -77,10 +80,9 @@ $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-к�
 curl_close($ch);
 
 
-
+if (($http_code != 200) && ($http_code != 201) && ($http_code != 204)) {
 	echo     '<br>Результат обмена (PATCH): '.$http_code;
-
-
+}
 
 $res = json_decode($res, true);
 

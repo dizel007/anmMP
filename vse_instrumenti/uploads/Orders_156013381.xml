@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ORDERS>
+	<ORDER DocID="156013381" SourceFile="orders_20231020080153_1291420.xml">
+		<BuyerGLN>4607977269995</BuyerGLN>
+		<SupplierGLN>4607191624679</SupplierGLN>
+		<DeliveryPointGLN>4607977269995</DeliveryPointGLN>
+		<SenderCode />
+		<ReceiverCode />
+		<Format>XML</Format>
+		<DocumentNumber>1291420</DocumentNumber>
+		<DocumentDate>20231020</DocumentDate>
+		<DeliveryDate>20231025</DeliveryDate>
+		<DeliveryTime>000000</DeliveryTime>
+		<Currency>RUB</Currency>
+		<Options>
+			<DocHeadOptions>
+				<DocOption>
+					<Name>ORDERS</Name>
+					<DocOption>
+						<Name>TYPE</Name>
+						<Value>2</Value>
+					</DocOption>
+				</DocOption>
+			</DocHeadOptions>
+		</Options>
+		<OrderDetail>
+			<EAN>4673728485297</EAN>
+			<SenderPrdCode>302А</SenderPrdCode>
+			<ReceiverPrdCode>302А</ReceiverPrdCode>
+			<ProductName>АНМАКС Решетка грязезащитная ANMAKS 990x490x20 мм стальная ячеистая оцинкованная 302A</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>2.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485624</EAN>
+			<SenderPrdCode>1940-10</SenderPrdCode>
+			<ReceiverPrdCode>1940-10</ReceiverPrdCode>
+			<ProductName>Анмакс Крепящий якорь к бордюру Кантри. Оцинкованная сталь. 10 штук, арт. 1940-10</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485075</EAN>
+			<SenderPrdCode>82401-Ч</SenderPrdCode>
+			<ReceiverPrdCode>82401-Ч</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр ANMAKS Кантри черный, длина 10000 мм, высота 110 мм, арт. 82401-Ч</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485082</EAN>
+			<SenderPrdCode>82401-К</SenderPrdCode>
+			<ReceiverPrdCode>82401-К</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр ANMAKS Кантри коричневый, длина 10000 мм, высота 110 мм, арт. 82401-К</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485686</EAN>
+			<SenderPrdCode>8910-30</SenderPrdCode>
+			<ReceiverPrdCode>8910-30</ReceiverPrdCode>
+			<ProductName>АНМАКС Крепящий анкер универсальный пластиковый, 30 штук, арт. 8910-30</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>3.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485051</EAN>
+			<SenderPrdCode>82400-К</SenderPrdCode>
+			<ReceiverPrdCode>82400-К</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр ANMAKS Кантри MINI коричневый, длина 10000 мм, высота 80 мм, арт. 82400-К</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>3.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485068</EAN>
+			<SenderPrdCode>82400-З</SenderPrdCode>
+			<ReceiverPrdCode>82400-З</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр Кантри MINI зеленый, длина 10000 мм, высота 80 мм, арт. 82400-З</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>3.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485587</EAN>
+			<SenderPrdCode>7245-К-16</SenderPrdCode>
+			<ReceiverPrdCode>7245-К-16</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр, Экобордюр Контур, длина 1000 мм, высота 45 мм, 16 штук, арт. 7245-К-16</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>2.0000</QTY>
+		</OrderDetail>
+	</ORDER>
+</ORDERS>

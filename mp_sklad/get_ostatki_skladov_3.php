@@ -4,7 +4,7 @@ require_once 'libs/PHPExcel-1.8/Classes/PHPExcel.php';
 require_once 'libs/PHPExcel-1.8/Classes/PHPExcel/Writer/Excel2007.php';
 require_once 'libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
 
-require_once "functions/topen.php";
+require_once "../tokens/topen.php";
 require_once "functions/torpen.php";
 require_once "functions/functions.php";
 require_once "functions/wb_catalog.php"; // массиво с каталогов наших товаров
@@ -47,7 +47,7 @@ if ($market == 'wb'){
     $warehouseId = 34790;// ID склада ООО на ВБ
     $arr_catalog = get_catalog_wb ();
 } elseif ($market == 'wbip'){
-    $token = $token_wbip;
+    $token = $token_wb_ip;
     $warehouseId = 221597;// ID склада ИП на ВБ 
     $arr_catalog = get_catalog_wbip ();
 } elseif ($market == 'ozon'){

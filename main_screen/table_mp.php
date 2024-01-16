@@ -28,7 +28,7 @@ echo <<<HTML
 </tr>
 <tr>
 <td class="main_screen"><h1>Склад</h1></td>
-<td class="main_screen"><a href="mp_sklad/start_wb.php"><img src="pics/sklad_ostatki.jpg"></a></td>
+<td class="main_screen"><a href="autosklad/start_mp.php"><img src="pics/sklad_ostatki.jpg"></a></td>
 <td class="main_screen"></td>
 <td class="main_screen"></td>
 <td class="main_screen"></td>

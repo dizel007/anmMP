@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ORDERS>
+	<ORDER DocID="156674831" SourceFile="orders_20231113080320_1344896.xml">
+		<BuyerGLN>4607977269995</BuyerGLN>
+		<SupplierGLN>4607191624679</SupplierGLN>
+		<DeliveryPointGLN>4607977269995</DeliveryPointGLN>
+		<SenderCode />
+		<ReceiverCode />
+		<Format>XML</Format>
+		<DocumentNumber>1344896</DocumentNumber>
+		<DocumentDate>20231113</DocumentDate>
+		<DeliveryDate>20231117</DeliveryDate>
+		<DeliveryTime>000000</DeliveryTime>
+		<Currency>RUB</Currency>
+		<Options>
+			<DocHeadOptions>
+				<DocOption>
+					<Name>ORDERS</Name>
+					<DocOption>
+						<Name>TYPE</Name>
+						<Value>2</Value>
+					</DocOption>
+				</DocOption>
+			</DocHeadOptions>
+		</Options>
+		<OrderDetail>
+			<EAN>4673728485044</EAN>
+			<SenderPrdCode>82400-Ч</SenderPrdCode>
+			<ReceiverPrdCode>82400-Ч</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр ANMAKS Кантри MINI черный, длина 10000 мм, высота 80 мм, арт. 82400-Ч</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>4.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485457</EAN>
+			<SenderPrdCode>ANM.508К</SenderPrdCode>
+			<ReceiverPrdCode>ANM.508К</ReceiverPrdCode>
+			<ProductName>Анмакс Решетка водоприемная DN100 щелевая стальная оцинкованная под крепеж1000x136 мм ANM.508К</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485013</EAN>
+			<SenderPrdCode>8211</SenderPrdCode>
+			<ReceiverPrdCode>8211</ReceiverPrdCode>
+			<ProductName>Анмакс Бордюр тротуарный ANMAKS пластиковый, длина 3000 мм, высота 60 мм, арт. 8211</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>7.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485075</EAN>
+			<SenderPrdCode>82401-Ч</SenderPrdCode>
+			<ReceiverPrdCode>82401-Ч</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр ANMAKS Кантри черный, длина 10000 мм, высота 110 мм, арт. 82401-Ч</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485297</EAN>
+			<SenderPrdCode>302А</SenderPrdCode>
+			<ReceiverPrdCode>302А</ReceiverPrdCode>
+			<ProductName>АНМАКС Решетка грязезащитная ANMAKS 990x490x20 мм стальная ячеистая оцинкованная 302A</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+	</ORDER>
+</ORDERS>

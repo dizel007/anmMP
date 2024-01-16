@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ORDERS>
+	<ORDER DocID="157014203" SourceFile="orders_20231124080216_1378796.xml">
+		<BuyerGLN>4607977269995</BuyerGLN>
+		<SupplierGLN>4607191624679</SupplierGLN>
+		<DeliveryPointGLN>4607977269995</DeliveryPointGLN>
+		<SenderCode />
+		<ReceiverCode />
+		<Format>XML</Format>
+		<DocumentNumber>1378796</DocumentNumber>
+		<DocumentDate>20231124</DocumentDate>
+		<DeliveryDate>20231129</DeliveryDate>
+		<DeliveryTime>000000</DeliveryTime>
+		<Currency>RUB</Currency>
+		<Options>
+			<DocHeadOptions>
+				<DocOption>
+					<Name>ORDERS</Name>
+					<DocOption>
+						<Name>TYPE</Name>
+						<Value>2</Value>
+					</DocOption>
+				</DocOption>
+			</DocHeadOptions>
+		</Options>
+		<OrderDetail>
+			<EAN>4673728485044</EAN>
+			<SenderPrdCode>82400-Ч</SenderPrdCode>
+			<ReceiverPrdCode>82400-Ч</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр ANMAKS Кантри MINI черный, длина 10000 мм, высота 80 мм, арт. 82400-Ч</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>2.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485662</EAN>
+			<SenderPrdCode>8212-10</SenderPrdCode>
+			<ReceiverPrdCode>8212-10</ReceiverPrdCode>
+			<ProductName>Анмакс Бордюр тротуарный ANMAKS пластиковый, длина 3000 мм, высота 80 мм, 10 штук, арт. 8212-10</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>5.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485303</EAN>
+			<SenderPrdCode>301А</SenderPrdCode>
+			<ReceiverPrdCode>301А</ReceiverPrdCode>
+			<ProductName>Решетка придверная грязезащитная стальная ANMAKS, 39 х 59 cм</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485433</EAN>
+			<SenderPrdCode>AN.301.315</SenderPrdCode>
+			<ReceiverPrdCode>AN.301.315</ReceiverPrdCode>
+			<ProductName>Комплект: грязезащитная придверная стальная решетка + пластиковый поддон, арт.AN.301.315</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>8.0000</QTY>
+		</OrderDetail>
+	</ORDER>
+</ORDERS>

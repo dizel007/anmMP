@@ -75,15 +75,15 @@ $kolvo_tovarov = 0;
 
  //  Выводим таблицу с Количество купленно
  if (isset($array_art_price)){
- echo "<h2>Список купленных товаров</h2>";
- make_spisok_sendings_ozon_1С ($array_art_price);
+        echo "<h2>Список купленных товаров</h2>";
+        make_spisok_sendings_ozon_1С ($array_art_price);
 
- //  Выводим таблицу с Заказами
- echo "<h2>Перечень заказов</h2>";
-make_spisok_sendings_ozon ($res['result']['postings']);
-// Ссылка для запуска сбора всех заказов
-$link ="controller/make_all_zakaz.php?date_query_ozon=".$date_query_ozon."&dop_days_query=0";
-echo "Собрать все Заказы<a href=\"$link\">*СТАРТ*</a> ";
+        //  Выводим таблицу с Заказами
+        echo "<h2>Перечень заказов</h2>";
+        make_spisok_sendings_ozon ($res['result']['postings']);
+        // Ссылка для запуска сбора всех заказов
+        $link ="controller/make_all_zakaz.php?date_query_ozon=".$date_query_ozon."&dop_days_query=0";
+        echo "Собрать все Заказы<a href=\"$link\">*СТАРТ*</a> ";
  } else {
     echo "<h2>НЕТ ДАНЫХ ДЛЯ ВЫДАЧИ</h2>";
  }

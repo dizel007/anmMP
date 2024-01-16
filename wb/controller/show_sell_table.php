@@ -7,16 +7,21 @@
 function show_orders ($new_array_orders){
 
 
-// echo "<pre>";
-echo "<table class = \"prod_table\">";
-echo "<tr>
-<td>пп</td>
-<td>Артикул</td>
-<td>Количество</td>
-<td>цена</td>
+echo <<<HTML
+<div class = "table-wrapper">
+<table class = "fl-table">
+    <thead>
+        <tr>
+            <th>пп</th>
+            <th>Артикул</th>
+            <th>Количество</th>
+            <th>цена</th>
+        </tr>
+    </thead>
+<tbody>
+HTML;
 
 
-</tr>";
 $i=1;
 foreach ($new_array_orders as $key=>$item) {
 //  print_r($item);
@@ -29,5 +34,5 @@ echo "<td>$i</td>
  
 $i++;
 }
-echo "</table>";
+echo "</tbody></table></div>";
 }

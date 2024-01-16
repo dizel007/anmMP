@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ORDERS>
+	<ORDER DocID="156077831" SourceFile="orders_20231023080226_1294710.xml">
+		<BuyerGLN>4607977269995</BuyerGLN>
+		<SupplierGLN>4607191624679</SupplierGLN>
+		<DeliveryPointGLN>4607977269995</DeliveryPointGLN>
+		<SenderCode />
+		<ReceiverCode />
+		<Format>XML</Format>
+		<DocumentNumber>1294710</DocumentNumber>
+		<DocumentDate>20231023</DocumentDate>
+		<DeliveryDate>20231027</DeliveryDate>
+		<DeliveryTime>000000</DeliveryTime>
+		<Currency>RUB</Currency>
+		<Options>
+			<DocHeadOptions>
+				<DocOption>
+					<Name>ORDERS</Name>
+					<DocOption>
+						<Name>TYPE</Name>
+						<Value>2</Value>
+					</DocOption>
+				</DocOption>
+			</DocHeadOptions>
+		</Options>
+		<OrderDetail>
+			<EAN>4673728485044</EAN>
+			<SenderPrdCode>82400-Ч</SenderPrdCode>
+			<ReceiverPrdCode>82400-Ч</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр ANMAKS Кантри MINI черный, длина 10000 мм, высота 80 мм, арт. 82400-Ч</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485075</EAN>
+			<SenderPrdCode>82401-Ч</SenderPrdCode>
+			<ReceiverPrdCode>82401-Ч</ReceiverPrdCode>
+			<ProductName>Анмакс Пластиковый садовый бордюр ANMAKS Кантри черный, длина 10000 мм, высота 110 мм, арт. 82401-Ч</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>1.0000</QTY>
+		</OrderDetail>
+		<OrderDetail>
+			<EAN>4673728485488</EAN>
+			<SenderPrdCode>ANM.503</SenderPrdCode>
+			<ReceiverPrdCode>ANM.503</ReceiverPrdCode>
+			<ProductName>АНМАКС Решетка водоприемная DN100 щелевая из нержавеющей стали 1000x136 мм, ANM.503</ProductName>
+			<UOM>PCE</UOM>
+			<QTY>6.0000</QTY>
+		</OrderDetail>
+	</ORDER>
+</ORDERS>

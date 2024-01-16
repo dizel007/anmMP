@@ -27,7 +27,13 @@ if (isset($_GET['date_query_ozon'])) {
 
   $nomer_zakaz = $_GET['nomer_zakaz'];
 // Получаем списрк заказов готовых к отправлению (Берем только на выбранное число)
+
 $res = get_all_waiting_posts_for_need_date($token, $client_id, $date_query_ozon, "awaiting_deliver",0);
+
+
+// echo  "<pre>";
+// print_r($res);
+// die('ffffffffffffffffffffffffffff');
 
 
 /******************************************************************************************************************
@@ -52,6 +58,9 @@ $file_name_list_podbora = make_list_podbora_new ($array_oben, $date_query_ozon, 
   echo "Нет файла для формирования листа подбора";
   // unset($file_name_list_podbora);
 }
+
+
+
 
 // формируем массиы где заказы разбиты поартикульно 
 foreach ($res['result']['postings'] as $posts_z) {

@@ -1,7 +1,7 @@
 <?php
 require_once "functions/functions.php";
 require_once "wb_get_sebes.php";
-require_once "../functions/topen.php";
+require_once "../../tokens/topen.php";
 /// для ООО
 if (isset($_GET['wb'])){
 if ($_GET['wb'] == 1) {
@@ -89,7 +89,7 @@ die ('Нужно выбрать даты');
 
 $dop_link = "?dateFrom=".$dateFrom."&limit=100000&dateTo=".$dateTo."&rrdid=0";
 $link_wb = "https://statistics-api.wildberries.ru/api/v1/supplier/reportDetailByPeriod".$dop_link;
-
+// $link_wb = 'https://statistics-api.wildberries.ru/api/v2/supplier/reportDetailByPeriod'.$dop_link;
 $arr_result = light_query_without_data($token_wb_stat, $link_wb);
 
 /*

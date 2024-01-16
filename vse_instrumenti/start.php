@@ -50,7 +50,7 @@ if (!is_dir($temp_dir)) {
 }
 
 echo "<pre>";
-// print_r($array['ORDER']['OrderDetail']);
+print_r($array['ORDER']['OrderDetail']);
 
 
 // перебираем массив из ВИ
@@ -65,6 +65,10 @@ foreach ($array['ORDER']['OrderDetail'] as &$item) {
     unlink($file_name);
 
 }
+
+
+// var_dump($arr_file_names);
+// die('ffffffffffffffff');
 
 print_r($array['ORDER']['OrderDetail']);
 //// Формируем файл для 1С

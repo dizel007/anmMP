@@ -3,8 +3,8 @@ require_once "tokens/topen.php";
 require_once "functions/mp_catalog.php"; // массиво с каталогов наших товаров
 require_once "functions/razbor_post_array.php"; // массиво с каталогов наших товаров
 
-echo '<link rel="stylesheet" href="css/main_table.css">';
-echo "<pre>";
+// echo '<link rel="stylesheet" href="css/main_table.css">';
+// echo "<pre>";
 // print_r($_POST);
 // die('ddd');
 
@@ -12,11 +12,14 @@ echo "<pre>";
 
 $wb_update_items_quantity = razbor_post_massive_wb($_POST);
 $warehouseId = 34790;// ID склада ООО на ВБ
+    // обновляем остатки на ВБ если они есть
+if ($wb_update_items_quantity <> "no_data") {
     foreach ($wb_update_items_quantity as $wb_item) {
         $data_wb["stocks"][] = $wb_item;
     }
-    // обновляем остатки на ВБ
-$result_wb = update_wb_ostatki($warehouseId, $token_wb, $data_wb);
+
+        $result_wb = update_wb_ostatki($warehouseId, $token_wb, $data_wb);
+    }
 // print_r($result_wb);
 // print_r($wb_update_items_quantity);
 
@@ -24,12 +27,15 @@ $result_wb = update_wb_ostatki($warehouseId, $token_wb, $data_wb);
 
 $wbip_update_items_quantity = razbor_post_massive_wbip($_POST);
 $warehouseId = 221597;// ID склада ООО на ВБ
+ // обновляем остатки на ВБИП если они есть
+
+if ($wbip_update_items_quantity <> "no_data") {
     foreach ($wbip_update_items_quantity as $wbip_item) {
         $data_wbip["stocks"][] = $wbip_item;
     }
-    // обновляем остатки на ВБ
-$result_wbip = update_wb_ostatki($warehouseId, $token_wb_ip, $data_wbip);
 
+$result_wbip = update_wb_ostatki($warehouseId, $token_wb_ip, $data_wbip);
+    }
 // print_r($result_wbip);
 // print_r($wbip_update_items_quantity);
 
@@ -37,6 +43,9 @@ $result_wbip = update_wb_ostatki($warehouseId, $token_wb_ip, $data_wbip);
 /* **************************   МАссив для обновления ОЗОН *********************************** */
 $ozon_update_items_quantity = razbor_post_massive_ozon($_POST);
 $arr_catalog = get_catalog_ozon ();
+
+
+if ($ozon_update_items_quantity <> "no_data") {
 
 // добавляем к массиву артикул
 foreach ($ozon_update_items_quantity as &$item) {
@@ -70,8 +79,10 @@ $send_data =  array("stocks" => $temp_data_send);
 $send_data = json_encode($send_data, JSON_UNESCAPED_UNICODE)  ;
 $ozon_dop_url = "v1/product/import/stocks";
 $result_ozon = update_ozon_ostatki($token_ozon, $client_id_ozon, $send_data, $ozon_dop_url );
-
+}
 /* *************** возвращаемся к таблице*/
+// echo $_SERVER['DOCUMENT_ROOT'];
+// die();
 header('Location: get_all_ostatki_skladov.php?return=777', true, 301);
 
 
@@ -102,7 +113,7 @@ $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Получаем HTTP-к�
 curl_close($ch);
 
 if (intdiv($http_code,100) > 2) {
-echo     'Результат обмена : '.$http_code. "<br>";
+echo     'Результат обмена вб: '.$http_code. "<br>";
 }
 $res = json_decode($res, true);
 // echo "<pre>";
@@ -136,7 +147,7 @@ function update_ozon_ostatki($token, $client_id, $send_data, $ozon_dop_url ) {
 	$res = json_decode($res, true);
 
     if (intdiv($http_code,100) > 2) {
-        echo     'Результат обмена : '.$http_code. "<br>";
+        echo     'Результат обмена озон: '.$http_code. "<br>";
         }
    
     return($res);	

@@ -1,0 +1,38 @@
+
+send_mail_func.php
+leroy/functions/topen.php
+ozon/functions/torpen.php
+wb/functions/topen.php
+
+mp_sklad/function/topen.php
+mp_sklad/function/torpen.php
+
+parce_xml_upd/functions/topen.php
+parce_xml_upd/reports/
+
+wb/functions/send_mail_func.php
+main_screen/password_2.php
+
+
+# LERUA *****************************
+leroy/EXCEL/
+leroy/lerua_get_token_(work).php
+# OZON *****************************
+ozon/EXCEL/
+ozon/reports/
+
+# WB *****************************
+wb/reports/
+wb/wb_reports//reports/
+
+# vse_instrumenti *****************************
+vse_instrumenti/reports/
+vse_instrumenti/uploads/
+
+
+mp_sklad/uploads/
+
+wb/json_supply/
+
+
+wb/zip_arc/

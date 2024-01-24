@@ -41,7 +41,7 @@ function get_new_zakazi_wb ($token_wb, $wb_catalog) {
     }
     unset($items_wb);
     
-    if (isset ($arr_name)) {  // проверяем есть ли массив проданных товаров
+if (isset ($arr_name)) {  // проверяем есть ли массив проданных товаров
        foreach ($arr_name as $key => $temp_items) {
            $arr_article_count[$key] = count($arr_name[$key]);
        }
@@ -73,22 +73,26 @@ $dop_days_query = 14; // захватывает 14 дней после сего�
 //  Получаем фактические заказы с сайта озона (4 дня доо и 14 после сегодняшне йдаты)
 $res = get_all_waiting_posts_for_need_date($token_ozon, $client_id_ozon, $date_query_ozon, 'awaiting_packaging', $dop_days_query);
 
-foreach ($res['result']['postings'] as $items) {
-    foreach ($items['products'] as $product) {
-        $arr_products[$product['offer_id']] = @$arr_products[$product['offer_id']] + $product['quantity'];
-    }
-    
-}
+// echo "<pre>";
+// print_r($res);
 
-foreach ($arr_products as $key=>$prods) {
-    foreach ($ozon_catalog as &$items_ozon) {
-        // echo "<br>key=$key<br>";
-        if ($key == $items_ozon['article']) {
-            $items_ozon['sell_count'] = $prods;
-        } 
+if ($res['result']['count'] <> 0 ) { // если нет заказов на озоне, то просто возвращаем массив товаров назад
+    foreach ($res['result']['postings'] as $items) {
+        foreach ($items['products'] as $product) {
+            $arr_products[$product['offer_id']] = @$arr_products[$product['offer_id']] + $product['quantity'];
+        }
+        
+    }
+
+    foreach ($arr_products as $key=>$prods) {
+        foreach ($ozon_catalog as &$items_ozon) {
+            // echo "<br>key=$key<br>";
+            if ($key == $items_ozon['article']) {
+                $items_ozon['sell_count'] = $prods;
+            } 
+        }
     }
 }
-
 
 return $ozon_catalog;
 }

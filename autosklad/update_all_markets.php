@@ -1,5 +1,5 @@
 <?php
-require_once "tokens/topen.php";
+require_once "../tokens/topen.php";
 require_once "functions/mp_catalog.php"; // массиво с каталогов наших товаров
 require_once "functions/razbor_post_array.php"; // массиво с каталогов наших товаров
 

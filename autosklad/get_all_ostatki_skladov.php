@@ -4,7 +4,7 @@ require_once 'libs/PHPExcel-1.8/Classes/PHPExcel.php';
 require_once 'libs/PHPExcel-1.8/Classes/PHPExcel/Writer/Excel2007.php';
 require_once 'libs/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
 
-require_once "tokens/topen.php";
+require_once "../tokens/topen.php";
 require_once "functions/functions.php";
 require_once "functions/function_get_ostatki.php";
 require_once "functions/mp_catalog.php"; // массиво с каталогов наших товаров

@@ -18,10 +18,11 @@ foreach ($arr_orders as $hud) {
 foreach ($arr_orders as $items) {
     $our_item = $items['items'];
     foreach ($our_item as $item) {
-    // $arr_atricrle[$item['sku']] = 1;
+
         $arr_atricrle[$item['sku']]['name'] = $item['name'];
         $arr_atricrle[$item['sku']]['sku'] = $item['sku'];
-        }
+
+    }
     // echo "<br>999999=".count($our_item)."";
     $arr_atricrle[$item['sku']]['count'] = @$arr_atricrle[$item['sku']]['count'] + count($our_item); // количество элементов в массиве
     $arr_atricrle[$item['sku']]['amount'] = @$arr_atricrle[$item['sku']]['amount'] + $items['amount']; // суммма к перечислению
@@ -29,15 +30,15 @@ foreach ($arr_orders as $items) {
 
     foreach ($items['services'] as $services) { // перебираем массив services 
             if ($services['name'] == 'MarketplaceServiceItemDirectFlowLogistic') {
-
+//логистика
                 $arr_atricrle[$item['sku']]['logistika'] = @$arr_atricrle[$item['sku']]['logistika'] + $services['price']; // суммма логистики
             }
-
             if ($services['name'] == 'MarketplaceServiceItemDropoffSC') {
+// обработка отправления
                 $arr_atricrle[$item['sku']]['sborka'] = @$arr_atricrle[$item['sku']]['sborka'] + $services['price']; // суммма логистики
             }
-
             if ($services['name'] == 'MarketplaceServiceItemDelivToCustomer') {
+//последняя миля.
                 $arr_atricrle[$item['sku']]['lastMile'] = @$arr_atricrle[$item['sku']]['lastMile'] + $services['price']; // суммма логистики
             }
     }

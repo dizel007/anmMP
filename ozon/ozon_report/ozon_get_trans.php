@@ -86,8 +86,8 @@ $page_count = $res['result']['page_count'];
 $row_count = $res['result']['row_count'];
 echo $page_count ." ". $row_count;
 
-echo "<pre>";
-// print_r($res['result']['operations']);
+// echo "<pre>";
+// print_r($res);
 // die('fffffffffffffffffffffffffffffffffffffffffffffffffffffff');
 
 for ($i=1; $i <=$page_count; $i ++) {
@@ -107,9 +107,19 @@ for ($i=1; $i <=$page_count; $i ++) {
     $send_data = json_encode($send_data);
     $res = send_injection_on_ozon($token, $client_id, $send_data, $ozon_link );
     $prod_array[] = $res['result']['operations'];
+    echo "*<br>";
+
 
 }
 
 
+// echo "<pre>";
+// print_r ($prod_array);
+
+// die(); ///////////////////////// DELETEE ********************
+
+require_once "xxxx.php";
+
+die();
 require_once "ozon_get_trans_1.php";
 require_once "ozon_get_trans_2.php";

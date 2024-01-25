@@ -17,7 +17,7 @@ echo <<<HTML
     <td>Себестоимость</td>
     <td>Дельта руб <br> за шт</td>
     <td>Заработали руб <br> на артикуле</td>
-    <td>сумма<br> комиссии ВБ</td>
+    <td>сумма<br> комиссии </td>
     <td>Логистика<br> Логистика шт</td>
     <td>сборка<br> сборка шт</td>
     <td>посл.миля<br> посл.миля шт</td>
@@ -57,8 +57,10 @@ foreach ($arr_atricrle as $key=>$prod) {
             break;
         } else {
             $article = "NO DATA";
+       
         }
     }
+
 ////// подбираем себестоимость из каталога ;
 foreach ($ozon_sebest as $ozon_item2) { 
     if ($key == $ozon_item2['sku']) {

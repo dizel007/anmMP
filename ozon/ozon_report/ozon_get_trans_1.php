@@ -58,7 +58,7 @@ else {
 }
 
 echo "<pre>";
-print_r($prod_array) ;
+// print_r($prod_array) ;
 echo "<br>-*************************arr_index_dop*************************<br>";
 
 // print_r($arr_index_dop) ;

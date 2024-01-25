@@ -118,8 +118,8 @@ for ($i=1; $i <=$page_count; $i ++) {
 
 // die(); ///////////////////////// DELETEE ********************
 
-require_once "xxxx.php";
+// require_once "xxxx.php";
 
-die();
+// die();
 require_once "ozon_get_trans_1.php";
 require_once "ozon_get_trans_2.php";

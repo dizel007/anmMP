@@ -1,6 +1,16 @@
 <?PHP
+require_once '../../mp_sklad/functions/ozon_catalog.php';
+require_once "libs_ozon/sku_fbo_na_fbs.php"; // массив с себестоимостью товаров
+
+// $ozon_catalog = get_catalog_ozon ();
+$ozon_sebest = get_sebestiomost_ozon_with_sku_FBO ();
+
+echo "<pre>";
 
 
+print_r($ozon_sebest);
+
+die();
 // делаем один последовательный массив в операциями
 // foreach ($prod_array as $items) {
 //     foreach ($items as $item) {
@@ -10,8 +20,10 @@
 
 $new_prod_array = json_decode(file_get_contents('xxx.json'),true);
 
+
+
 // file_put_contents('xxx.json', json_encode($new_prod_array, JSON_UNESCAPED_UNICODE));
-echo "<pre>";
+
 
 foreach ($new_prod_array as $item) {
     
@@ -37,8 +49,51 @@ foreach ($new_prod_array as $item) {
     }
 }
 
+/************************************************************* */
+// foreach ($arr_orders as $items) {
+//     $our_item = $items['items'];
+// // перебираем список товаров в этом заказе (Там где одиночные борды. Остальные отправления мы разбиваем по 1 штуке)
+//     foreach ($our_item as $item) {
+// // print_r($items);
+// // die();
+//         $arr_article[$item['sku']]['name'] = $item['name'];
+//         $arr_article[$item['sku']]['sku'] = $item['sku'];
+//             if ($items['posting']['delivery_schema'] == 'FBO') {
+//                 // количество товаров в заказе 
+//                 $arr_article[$item['sku']]['countFBO'] = @$arr_article[$item['sku']]['countFBO'] + 1;
+//                 // Суммируем суммы операции
+//                 $arr_article[$item['sku']]['amountFBO'] = @$arr_article[$item['sku']]['amountFBO'] + $items['amount']/count($our_item); 
+//             } elseif ($items['posting']['delivery_schema'] == 'FBS') {
+//                 // количество товаров в заказе 
+//                 $arr_article[$item['sku']]['countFBS'] = @$arr_article[$item['sku']]['countFBS'] + 1;
+//                 // Суммируем суммы операции
+//                 $arr_article[$item['sku']]['amountFBS'] = @$arr_article[$item['sku']]['amountFBS'] + $items['amount']/count($our_item); 
+//             } else {
+//                 // количество товаров в заказе 
+//                 $arr_article[$item['sku']]['countXXX'] = @$arr_article[$item['sku']]['countXXX'] + 1;
+//                 // Суммируем суммы операции
+//                 $arr_article[$item['sku']]['amountXXX'] = @$arr_article[$item['sku']]['amountXXX'] + $items['amount']/count($our_item);   
+//             }
+     
+//     }
+// }
+
+/****************************************************************** */
+
 
 $i=0;
+
+function change_SKU_fbo_fbs($ozon_sebest, $sku){
+
+    foreach ($ozon_sebest as $item_cat) {
+        if ($sku == $item_cat['skuFBO']) {
+            $sku  = $item_cat['skuFBO'];
+            break;
+           
+    }
+    return $sku;
+    }
+}
 /**************************************************************************************************************
  **************************************  ЗАКАЗЫ ************************************************************
  *************************************************************************************************************/
@@ -47,7 +102,7 @@ foreach ($arr_orders as $items) {
     $our_item = $items['items'];
 // перебираем список товаров в этом заказе (Там где одиночные борды. Остальные отправления мы разбиваем по 1 штуке)
     foreach ($our_item as $item) {
-
+            $new_sku = change_SKU_fbo_fbs($ozon_sebest, $item['sku']);
         $arr_article[$item['sku']]['name'] = $item['name'];
         $arr_article[$item['sku']]['sku'] = $item['sku'];
      // количество товаров в заказе 
@@ -56,6 +111,24 @@ foreach ($arr_orders as $items) {
        $arr_article[$item['sku']]['amount'] = @$arr_article[$item['sku']]['amount'] + $items['amount']/count($our_item); 
      // Суммируем Комиссию за продажу     
       $arr_article[$item['sku']]['sale_commission'] = @$arr_article[$item['sku']]['sale_commission'] + $items['sale_commission']/count($our_item);
+//***************************** РАЗБИВАЕМ ТОВАРЫ ПО СХЕМЕ ПОСТАВКИ ************************ */
+        if ($items['posting']['delivery_schema'] == 'FBO') {
+            // количество товаров в заказе 
+            $arr_article[$item['sku']]['countFBO'] = @$arr_article[$item['sku']]['countFBO'] + 1;
+            // Суммируем суммы операции
+            $arr_article[$item['sku']]['amountFBO'] = @$arr_article[$item['sku']]['amountFBO'] + $items['amount']/count($our_item); 
+        } elseif ($items['posting']['delivery_schema'] == 'FBS') {
+            // количество товаров в заказе 
+            $arr_article[$item['sku']]['countFBS'] = @$arr_article[$item['sku']]['countFBS'] + 1;
+            // Суммируем суммы операции
+            $arr_article[$item['sku']]['amountFBS'] = @$arr_article[$item['sku']]['amountFBS'] + $items['amount']/count($our_item); 
+        } else {
+            // количество товаров в заказе 
+            $arr_article[$item['sku']]['countXXX'] = @$arr_article[$item['sku']]['countXXX'] + 1;
+            // Суммируем суммы операции
+            $arr_article[$item['sku']]['amountXXX'] = @$arr_article[$item['sku']]['amountXXX'] + $items['amount']/count($our_item);   
+        }
+//*************************************************** */
 
     }
 
@@ -133,6 +206,7 @@ if ($items['operation_type'] == 'OperationClaim')
 /**************************************************************************************************************
  * Удержание за недовложение товара
  *************************************************************************************************************/
+if (isset($arr_compensation)){
 foreach ($arr_compensation as $items) {
     $i++;
     $our_item = $items['items'];
@@ -147,7 +221,7 @@ foreach ($arr_compensation as $items) {
 // Суммируем суммы операции, которые возвраты
     $arr_article[$item['sku']]['compensation'] = @$arr_article[$item['sku']]['compensation'] + $items['amount']; 
 }
-
+}
 /**************************************************************************************************************
  ***********************  Сервисы ******************************************************
  *************************************************************************************************************/
@@ -197,44 +271,46 @@ elseif ($items['operation_type'] == 'OperationMarketplaceDefectRate')
 //        [OperationMarketplaceDefectRate] => Услуга по изменению условий отгрузки
 // )
 
+// CSS цепляем
+echo "<link rel=\"stylesheet\" href=\"css/main_ozon_reports.css\">";
 
 
 
-// print_r($arr_article);
-// echo  $Summa_pretensii;
-// echo "<br>";
+echo "<table class=\"fl-table\">";
 
-// echo count($new_prod_array)."***".count($arr_orders)."***".count($arr_returns)."***".count($arr_other);
-
-// echo "<br>";
-// $ggg = count($new_prod_array)-count($arr_orders)-count($arr_returns)-count($arr_other)-count($arr_index_job);
-// echo $ggg;
-
-echo "<table width=100%>";
+// ШАПКА ТАблицы
 echo "<tr>";
-echo "<td>Наименование</td>";
-echo "<td>Кол-во продано</td>";
-echo "<td>Сумма продаж</td>";
-echo "<td>Хранение<br>утилизация</td>";
-echo "<td>Удержание<br>за недовложение</td>";
-echo "<td>Эквайринг</td>";
-echo "<td>Возвраты(шт)</td>";
-echo "<td>Возвраты(руб)</td>";
+    echo "<th style=\"width:10%\">Наименование</th>";
+    echo "<th>Кол-во<br>продано<br>(шт)</th>";
+    echo "<th>Кол-во<br>продано<br>FBO(шт)</th>";
+    echo "<th>Кол-во<br>продано<br>FBS(шт)</th>";
+    echo "<th>Сумма продаж<br>(руб)</th>";
+    echo "<th>Хранение<br>утилизация<br>(руб)</th>";
+    echo "<th>Удержание<br>за недовлож<br>(руб)</th>";
+    echo "<th>Эквайринг<br>(руб)</th>";
+    echo "<th>Возвраты<br>(шт)</th>";
+    echo "<th>Возвраты<br>(руб)</th>";
 
-echo "<td>Комиссия Озон</td>";
+    echo "<th>Комиссия Озон<br>(руб)</th>";
 
-echo "<td>Логистика</td>";
-echo "<td>Сборка</td>";
-echo "<td>Посл.миля(руб)</td>";
+    echo "<th>Логистика<br>(руб)</th>";
+    echo "<th>Сборка<br>(руб)</th>";
+    echo "<th>Посл.миля<br>(руб)</th>";
 
 echo "</tr>";
 
 
 foreach ($arr_article as $key=>$item) {
     @$amount +=$item['amount']; // сумма продажи 
+    
+    @$count +=$item['count']; // сумма продажи 
+    @$countFBO +=$item['countFBO']; // сумма продажи 
+    @$countFBS +=$item['countFBS']; // сумма продажи 
+
+
     @$amount_hranenie +=$item['amount_hranenie']; // общая стоимость хранения 
     @$amount_ecvairing +=$item['amount_ecvairing']; // Общая стоимость эквайринга
-
+    @$compensation += $item['compensation'] ; // Общая стоимость недовлажений
     @$amount_vozrat +=$item['amount_vozrat']; // Общая стоимость возвратов
     
     @$sale_commission +=$item['sale_commission']; // Общая стоимость 
@@ -247,6 +323,10 @@ foreach ($arr_article as $key=>$item) {
 
         if (isset($item['name'])){echo "<td>".$item['name']."</td>";}else{echo "<td>"."</td>";}
         if (isset($item['count'])){echo "<td>".$item['count']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($item['countFBO'])){echo "<td>".$item['countFBO']."</td>";}else{echo "<td>"."</td>";}
+        if (isset($item['countFBS'])){echo "<td>".$item['countFBS']."</td>";}else{echo "<td>"."</td>";}
+
+
         if (isset($item['amount'])){echo "<td>".$item['amount']."</td>";}else{echo "<td>"."</td>";}
         if (isset($item['amount_hranenie'])){echo "<td>".$item['amount_hranenie']."</td>";}else{echo "<td>"."</td>";}
         if (isset($item['compensation'])){echo "<td>".$item['compensation']."</td>";}else{echo "<td>"."</td>";}
@@ -263,7 +343,31 @@ foreach ($arr_article as $key=>$item) {
 
 }
 
+// СТРОКА ИТОГО ТАблицы
+echo "<tr>";
+    echo "<td></td>"; // Наименование
+    echo "<td>$count</td>"; // Количество
+    echo "<td>$countFBO</td>"; // Количество
+    echo "<td>$countFBS</td>"; // Количество
+
+    echo "<td>$amount</td>"; // общая сумма
+    if (isset($amount_hranenie)){echo "<td>".$amount_hranenie."</td>";}else{echo "<td>"."</td>";} // сумма хранения
+    if (isset($compensation)){echo "<td>".$compensation."</td>";}else{echo "<td>"."</td>";} // сумма эквайринга
+    if (isset($amount_ecvairing)){echo "<td>".$amount_ecvairing."</td>";}else{echo "<td>"."</td>";} // сумма эквайринга
+    echo "<td></td>";
+    if (isset($amount_vozrat)){echo "<td>".$amount_vozrat."</td>";}else{echo "<td>"."</td>";} // сумма возвратов
+
+    if (isset($sale_commission)){echo "<td>".$sale_commission."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
+
+    if (isset($logistika)){echo "<td>".$logistika."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
+    if (isset($sborka)){echo "<td>".$sborka."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
+    if (isset($lastMile)){echo "<td>".$lastMile."</td>";}else{echo "<td>"."</td>";} // сумма коммиссий
+
+echo "</tr>";
+
 echo "</table>";
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 echo "<br>";
 echo "ВЫПЛАТА С СЕВРИСНЫМИ СБОРАМ : $amount<br>";
 echo "СТОИМОСТЬ ХРАНЕНИЯ          : $amount_hranenie<br>";
@@ -283,8 +387,10 @@ echo "НАЧИСЛЕННО                  : $summa_NACHILS<br>";
 echo "<br>";
 echo "Услуги продвижения товаров : $Summa_uslugi_prodvizhenia_tovara<br>";
 echo "Приобретение отзывов на платформе : $Summa_buy_otzivi<br>";
-echo "Услуга по изменению условий отгрузки : $Summa_izmen_uslovi_otgruzki<br>";
-echo "сумма начислений по претензиям : $Summa_pretensii<br>";
+
+if (isset($Summa_izmen_uslovi_otgruzki)){echo "Услуга по изменению условий отгрузки : $Summa_izmen_uslovi_otgruzki<br>";}
+if (isset($Summa_pretensii)){echo "сумма начислений по претензиям : $Summa_pretensii<br>";}
+
 
 echo "Кол-во обработанных итэмс : $i<br>";
 

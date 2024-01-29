@@ -5,7 +5,7 @@
 
 require_once '../include_funcs.php';
 require_once '../../mp_sklad/functions/ozon_catalog.php';
-require_once "ozon_get_trans_6(sebes).php"; // массив с себестоимостью товаров
+// require_once "ozon_get_trans_6(sebes).php"; // массив с себестоимостью товаров
 
 echo <<<HTML
 <head>
@@ -118,8 +118,8 @@ for ($i=1; $i <=$page_count; $i ++) {
 
 // die(); ///////////////////////// DELETEE ********************
 
-require_once "xxxx_2.php";
+require_once "razbor_dannih.php";
 
 die();
-require_once "ozon_get_trans_1.php";
-require_once "ozon_get_trans_2.php";
+// require_once "ozon_get_trans_1.php";
+// require_once "ozon_get_trans_2.php";

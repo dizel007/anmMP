@@ -51,9 +51,9 @@ $arr_article_items =  Parce_excel_1c_sklad ($xls) ; // парсим Загруж
 echo "<pre>";
 
 // Формируем три массива с процентным разбиением товара по всем складам
-$WB_proc = 40;
-$WBIP_proc = 30;
-$OZON_proc = 30;
+
+require_once "raspredelenie_po_skladam.php"; /// ТУТ коэффициент распределения товаров по складам
+
 
 if (($WBIP_proc + $WB_proc + $OZON_proc) > 100) {
     die (' БОЛЬШЕ 100 % ТОВАРА НЕ МОЖЕМ РАЗПРЕДЕЛИТЬ');

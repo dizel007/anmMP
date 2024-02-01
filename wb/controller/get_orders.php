@@ -141,7 +141,7 @@ if (isset($raw_arr_orders['orders'][0])) {
       <input hidden type="text" name="token" value="$token_wb_ip">
       <input hidden type="text" name="wb_path" value="ip">
       <input required type="number" name="Zakaz1cNumber" value="">
-      <input type="submit" value="СОБРАТЬ">
+      <input type="submit"  value="СОБРАТЬ">
     
  </form>   
 
@@ -150,6 +150,9 @@ if (isset($raw_arr_orders['orders'][0])) {
  
 </tbody>
 </table>
+
+
+
 </div>
 
 HTML;

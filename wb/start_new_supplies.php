@@ -358,7 +358,7 @@ echo <<<HTML
 </form>
 HTML;
 
-die('РАЗБОР ОКОНЧЕН (DIE)');
+die('РАЗБОР ОКОНЧЕН (STOP)');
 
 
 

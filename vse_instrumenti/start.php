@@ -50,11 +50,17 @@ if (!is_dir($temp_dir)) {
 }
 
 echo "<pre>";
-print_r($array['ORDER']['OrderDetail']);
+// print_r($array['ORDER']['OrderDetail']);
+if (isset($array['ORDER']['OrderDetail'][0])) {
+$our_array = $array['ORDER']['OrderDetail'];
+} else {
+ 
+ $our_array[0] = $array['ORDER']['OrderDetail'];
+}
 
 
-// перебираем массив из ВИ
-foreach ($array['ORDER']['OrderDetail'] as &$item) {
+  // перебираем массив из ВИ
+foreach ($our_array as &$item) {
 
     $item['price'] = get_price_for_1C ($arr_catalog, $item['SenderPrdCode']);
     $barnumber=$item['EAN'];
@@ -63,16 +69,23 @@ foreach ($array['ORDER']['OrderDetail'] as &$item) {
     $file_name = $file.".png";
    $arr_file_names[] = get_shtrih_code ($item , $DocNumber, $file_name);
     unlink($file_name);
-
 }
+
+// echo count($array['ORDER']['OrderDetail'])."<br>";
+// print_r($array['ORDER']['OrderDetail']);
+
+
+// die('ggg');
+
 
 
 // var_dump($arr_file_names);
 // die('ffffffffffffffff');
 
-print_r($array['ORDER']['OrderDetail']);
+print_r($our_array);
+
 //// Формируем файл для 1С
-$file_name_1c_list = make_1c_file ($array['ORDER']['OrderDetail'], $temp_dir.'/');
+$file_name_1c_list = make_1c_file ($our_array, $temp_dir.'/');
 
 $zip = new ZipArchive();
 $archive_path = $temp_dir. '/'."$DocNumber.zip";
